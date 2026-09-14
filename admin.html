@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Staff Admin · Kshanbhar Vishranti Agro</title>
+<meta name="robots" content="noindex, nofollow">
+<!--
+  Staff admin panel: Media Upload + Bookings + Enquiries.
+
+  SECURITY NOTE (read before relying on this):
+  - The login screen below is a convenience gate, not strong security - the JS is visible to
+    anyone who views source. The BOOKINGS and ENQUIRIES tabs are the ones that matter (they show
+    guest names/phones), so those two fetch from n8n webhooks protected by real HTTP Basic Auth
+    (credential "KVA Admin Basic Auth": Suhas91286 / Suhas91286) - without the right password the
+    n8n webhook itself refuses the data, regardless of what the page's JS does.
+  - The Upload Media tab posts to the same public webhook as media-upload.html (kva-media-upload) -
+    not extra-protected, since that page is already meant to accept guest photo submissions too.
+  - >>> Set BOOKINGS_URL / ENQUIRIES_URL below once the matching n8n workflows exist. <<<
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet">
+<style>
+  :root{
+    --green:#0E4A43; --green-dark:#0A3733; --green-light:#E7F0EC;
+    --cream:#FBF8F1; --paper:#FFFFFF; --ink:#16241F; --muted:#5B6E64; --line:#DFE6DF;
+    --accent:#C0532E; --radius:16px; --shadow-sm:0 2px 10px rgba(15,35,28,.08);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;background:var(--cream);color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}
+  h1,h2,.serif{font-family:'Fraunces',Georgia,serif}
+  a{color:inherit}
+
+  /* ---- login ---- */
+  #loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .login-card{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:38px 32px;max-width:380px;width:100%;box-shadow:0 12px 30px -14px rgba(15,35,28,.22);text-align:center}
+  .login-card .mark{width:52px;height:52px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 16px}
+  .login-card h1{font-size:1.3rem;margin:0 0 4px}
+  .login-card p{color:var(--muted);font-size:.88rem;margin:0 0 26px}
+  .field{text-align:left;margin-bottom:16px}
+  .field label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:6px;letter-spacing:.02em}
+  .field input{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:10px;font-size:.95rem;background:#F7FAF9}
+  .field input:focus{outline:2px solid var(--green);outline-offset:1px;border-color:var(--green)}
+  .err-msg{background:#FBE9E7;color:var(--accent);border:1px solid #F0C8C2;border-radius:10px;padding:10px 12px;font-size:.85rem;margin-bottom:16px;display:none}
+  .err-msg.show{display:block}
+
+  /* ---- shared buttons ---- */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:999px;
+    font-weight:600;font-size:.92rem;border:1.5px solid transparent;cursor:pointer;text-decoration:none}
+  .btn-primary{background:var(--green);color:#fff;width:100%}
+  .btn-primary:hover{background:var(--green-dark)}
+  .btn-ghost{background:#fff;border-color:var(--line);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--green)}
+  .btn-sm{padding:8px 14px;font-size:.82rem}
+
+  /* ---- app shell ---- */
+  #app{display:none}
+  #app.show{display:block}
+  header.top{background:var(--green-dark);color:#fff;padding:16px 0}
+  header.top .wrap{max-width:1100px;margin:0 auto;padding-inline:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  header.top .brand{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-weight:600}
+  header.top .brand .mark{width:34px;height:34px;border-radius:50%;background:#fff;color:var(--green);display:flex;align-items:center;justify-content:center;font-size:16px}
+  .tabs{max-width:1100px;margin:0 auto;padding:20px 24px 0;display:flex;gap:8px;flex-wrap:wrap}
+  .tab-btn{background:var(--paper);border:1px solid var(--line);border-radius:12px 12px 0 0;padding:12px 20px;font-weight:600;font-size:.92rem;cursor:pointer;color:var(--muted)}
+  .tab-btn.active{background:var(--paper);color:var(--green);border-bottom-color:var(--paper);box-shadow:0 -2px 10px rgba(15,35,28,.05)}
+  main{max-width:1100px;margin:0 auto;padding:0 24px 60px}
+  .panel{background:var(--paper);border:1px solid var(--line);border-radius:0 16px 16px 16px;padding:28px;box-shadow:var(--shadow-sm);display:none}
+  .panel.active{display:block}
+  .panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+  .panel-head h2{font-size:1.2rem;margin:0}
+  .panel-head p{margin:2px 0 0;color:var(--muted);font-size:.85rem}
+
+  table{width:100%;border-collapse:collapse;font-size:.88rem}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{color:var(--muted);font-weight:600;font-size:.76rem;text-transform:uppercase;letter-spacing:.04em;cursor:pointer;user-select:none}
+  th:hover{color:var(--green)}
+  td.wrap{white-space:normal;max-width:260px}
+  tr:hover td{background:var(--green-light)}
+  .table-scroll{overflow-x:auto}
+  .badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.74rem;font-weight:600}
+  .badge.ok{background:#E3F3E9;color:#1F7A45}
+  .badge.warn{background:#FCEFD9;color:#A56A0E}
+  .badge.bad{background:#FBE9E7;color:var(--accent)}
+  .badge.neutral{background:var(--green-light);color:var(--green)}
+  .state{padding:40px;text-align:center;color:var(--muted)}
+  .state.error{color:var(--accent)}
+
+  /* ---- upload form (same as media-upload.html) ---- */
+  .drop{border:2px dashed var(--line);border-radius:14px;background:#F7FAF9;padding:26px 18px;text-align:center;cursor:pointer;max-width:480px}
+  .drop.drag{border-color:var(--green);background:#eef5f2}
+  #fileInput{display:none}
+  .upload-form label{display:block;font-weight:600;font-size:.8rem;color:var(--muted);margin:16px 0 6px;max-width:480px}
+  .upload-form input[type=text],.upload-form textarea,.upload-form select{width:100%;max-width:480px;background:#F7FAF9;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.92rem;font-family:inherit}
+  .upload-form textarea{min-height:70px}
+  .preview{margin-top:12px;max-width:480px;display:none}
+  .preview.show{display:block}
+  .preview img,.preview video{width:100%;max-height:220px;object-fit:cover;border-radius:10px;border:1px solid var(--line);background:#000}
+  .upload-msg{margin-top:14px;padding:10px 12px;border-radius:10px;font-size:.86rem;display:none;max-width:480px}
+  .upload-msg.show{display:block}
+  .upload-msg.ok{background:#E3F3E9;color:#1F7A45}
+  .upload-msg.err{background:#FBE9E7;color:var(--accent)}
+
+  @media (max-width:640px){
+    th,td{padding:9px 8px;font-size:.82rem}
+  }
+
+  /* ---- staff assistant chat ---- */
+  #n8n-chat-staff{
+    --chat--color-primary: #0E4A43;
+    --chat--color-secondary: #C0532E;
+    --chat--border-radius: 14px;
+    --chat--window--width: 100%;
+    --chat--window--height: 100%;
+    height: 600px;
+    max-width: 640px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .assistant-note{color:var(--muted);font-size:.82rem;max-width:640px;margin:-8px 0 16px}
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="mark">🌾</div>
+    <h1>Staff Admin</h1>
+    <p>Kshanbhar Vishranti Agro Tourism</p>
+    <div class="err-msg" id="loginErr">Wrong username or password. Please try again.</div>
+    <form id="loginForm">
+      <div class="field">
+        <label for="user">Username</label>
+        <input type="text" id="user" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="pass">Password</label>
+        <input type="password" id="pass" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Sign in</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app">
+  <header class="top">
+    <div class="wrap">
+      <div class="brand"><span class="mark">🌾</span> Kshanbhar Vishranti — Staff Admin</div>
+      <button class="btn btn-ghost btn-sm" id="logoutBtn" style="background:transparent;border-color:rgba(255,255,255,.4);color:#fff">Log out</button>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="upload">📤 Upload Media</button>
+    <button class="tab-btn" data-tab="bookings">📅 Bookings</button>
+    <button class="tab-btn" data-tab="enquiries">📝 Enquiries</button>
+    <button class="tab-btn" data-tab="assistant">🤖 Assistant</button>
+  </div>
+
+  <main>
+    <!-- ---- UPLOAD ---- -->
+    <section class="panel active" id="panel-upload">
+      <div class="panel-head">
+        <div><h2>Upload a photo or video</h2><p>Goes straight into the media gallery (pending review).</p></div>
+      </div>
+      <form class="upload-form" id="uploadForm">
+        <div class="drop" id="drop">
+          <div style="font-size:24px">📷 🎬</div>
+          <div style="font-weight:600;margin-top:6px">Tap to choose, or drag a file here</div>
+          <div style="color:var(--muted);font-size:.82rem;margin-top:2px">JPG / PNG / MP4 / MOV — up to 200 MB</div>
+        </div>
+        <input type="file" id="fileInput" accept="image/*,video/*">
+        <div class="preview" id="preview">
+          <div id="previewHolder"></div>
+          <div style="display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);margin-top:6px">
+            <span id="fileName">—</span>
+            <button type="button" id="removeBtn" style="background:none;border:none;color:var(--accent);font-weight:600;cursor:pointer">Remove</button>
+          </div>
+        </div>
+        <label for="title">Title</label>
+        <input type="text" id="title" placeholder="e.g. Bullock cart ride at sunset" required>
+        <label for="category">Category</label>
+        <select id="category">
+          <option value="activities">Activities</option>
+          <option value="landscape">Farm / landscape</option>
+          <option value="accommodation">Accommodation</option>
+          <option value="food">Food</option>
+          <option value="animals">Animals</option>
+          <option value="events">Events</option>
+          <option value="guests">Guests</option>
+          <option value="seasonal">Seasonal</option>
+          <option value="staff">Team</option>
+          <option value="other">Other</option>
+        </select>
+        <label for="credit">Taken by (optional)</label>
+        <input type="text" id="credit" placeholder="Name">
+        <label for="caption">Description (optional)</label>
+        <textarea id="caption" placeholder="A short line about this photo or video"></textarea>
+        <label style="display:flex;align-items:center;gap:8px;font-weight:500;color:var(--ink)">
+          <input type="checkbox" id="hasPeople" style="width:16px;height:16px"> Guests / people are visible in this file
+        </label>
+        <button type="submit" class="btn btn-primary" style="max-width:480px;margin-top:20px" id="uploadBtn">Upload to gallery</button>
+        <div class="upload-msg" id="uploadMsg"></div>
+      </form>
+    </section>
+
+    <!-- ---- BOOKINGS ---- -->
+    <section class="panel" id="panel-bookings">
+      <div class="panel-head">
+        <div><h2>Bookings</h2><p>Sorted by check-in date. Click a column heading to re-sort.</p></div>
+        <button class="btn btn-ghost btn-sm" onclick="loadData('bookings')">↻ Refresh</button>
+      </div>
+      <div id="bookingsBody"><div class="state">Loading bookings…</div></div>
+    </section>
+
+    <!-- ---- ENQUIRIES ---- -->
+    <section class="panel" id="panel-enquiries">
+      <div class="panel-head">
+        <div><h2>Enquiries</h2><p>Sorted by newest first. Click a column heading to re-sort.</p></div>
+        <button class="btn btn-ghost btn-sm" onclick="loadData('enquiries')">↻ Refresh</button>
+      </div>
+      <div id="enquiriesBody"><div class="state">Loading enquiries…</div></div>
+    </section>
+
+    <!-- ---- ASSISTANT ---- -->
+    <section class="panel" id="panel-assistant">
+      <div class="panel-head">
+        <div><h2>Staff Assistant</h2><p>Look up an enquiry, and once you've called the guest and taken payment, tell it to confirm the booking.</p></div>
+      </div>
+      <p class="assistant-note">e.g. "Ramesh Patil ka booking confirm karo, total 4500, advance 2000 liya" — it finds the enquiry, creates the booking, and marks the enquiry converted. It will ask if more than one enquiry matches.</p>
+      <div id="n8n-chat-staff"></div>
+    </section>
+  </main>
+</div>
+
+<script>
+(function () {
+  // ▼▼▼ n8n webhook URLs — set once the matching workflows are built ▼▼▼
+  var UPLOAD_URL     = "https://aryandakhare.app.n8n.cloud/webhook/kva-media-upload";
+  var BOOKINGS_URL   = "https://aryandakhare.app.n8n.cloud/webhook/kva-admin-bookings";
+  var ENQUIRIES_URL  = "https://aryandakhare.app.n8n.cloud/webhook/kva-admin-enquiries";
+  // ▲▲▲
+
+  var VALID_USER = "Suhas91286";
+  var VALID_PASS = "Suhas91286";
+
+  var loginScreen = document.getElementById('loginScreen');
+  var app = document.getElementById('app');
+  var loginForm = document.getElementById('loginForm');
+  var loginErr = document.getElementById('loginErr');
+
+  function authHeader() {
+    return 'Basic ' + btoa(VALID_USER + ':' + VALID_PASS);
+  }
+
+  function showApp() {
+    loginScreen.style.display = 'none';
+    app.classList.add('show');
+    loadData('bookings');
+    loadData('enquiries');
+  }
+
+  // Restore session
+  if (sessionStorage.getItem('kva_admin_ok') === '1') { showApp(); }
+
+  loginForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var u = document.getElementById('user').value.trim();
+    var p = document.getElementById('pass').value;
+    if (u === VALID_USER && p === VALID_PASS) {
+      sessionStorage.setItem('kva_admin_ok', '1');
+      loginErr.classList.remove('show');
+      showApp();
+    } else {
+      loginErr.classList.add('show');
+    }
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', function () {
+    sessionStorage.removeItem('kva_admin_ok');
+    app.classList.remove('show');
+    loginScreen.style.display = 'flex';
+    document.getElementById('pass').value = '';
+  });
+
+  // ---- tabs ----
+  document.querySelectorAll('.tab-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+      document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+      // Refresh so a booking the Assistant just created shows up straight away
+      if (btn.dataset.tab === 'bookings' || btn.dataset.tab === 'enquiries') loadData(btn.dataset.tab);
+    });
+  });
+
+  // ---- data tables ----
+  var STATE = { bookings: [], enquiries: [] };
+  var SORT = { bookings: { key: 'checkInDate', dir: 1 }, enquiries: { key: 'inquiryDate', dir: -1 } };
+
+  function fmtDate(v) {
+    if (!v) return '—';
+    var d = new Date(v);
+    if (isNaN(d)) return String(v);
+    return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+  function badge(text, kind) { return '<span class="badge ' + (kind || 'neutral') + '">' + text + '</span>'; }
+  function statusKind(s) {
+    s = String(s || '').toLowerCase();
+    if (['confirmed', 'active', 'converted', 'paid', 'fully-paid'].indexOf(s) > -1) return 'ok';
+    if (['cancelled', 'rejected', 'lost', 'failed'].indexOf(s) > -1) return 'bad';
+    if (['pending', 'new', 'in-discussion', 'follow-up', 'unpaid'].indexOf(s) > -1) return 'warn';
+    return 'neutral';
+  }
+
+  window.loadData = function (type) {
+    var url = type === 'bookings' ? BOOKINGS_URL : ENQUIRIES_URL;
+    var bodyEl = document.getElementById(type + 'Body');
+    bodyEl.innerHTML = '<div class="state">Loading…</div>';
+    fetch(url, { headers: { 'Authorization': authHeader() } })
+      .then(function (r) {
+        if (r.status === 401) throw new Error('Not authorised - check the admin password.');
+        if (!r.ok) throw new Error('Server error (' + r.status + ')');
+        return r.json();
+      })
+      .then(function (data) {
+        STATE[type] = Array.isArray(data) ? data : (data.items || []);
+        renderTable(type);
+      })
+      .catch(function (err) {
+        bodyEl.innerHTML = '<div class="state error">Couldn\'t load ' + type + ': ' + err.message + '</div>';
+      });
+  };
+
+  function renderTable(type) {
+    var bodyEl = document.getElementById(type + 'Body');
+    var rows = STATE[type].slice();
+    var sort = SORT[type];
+    rows.sort(function (a, b) {
+      var av = a[sort.key] || '', bv = b[sort.key] || '';
+      return av > bv ? sort.dir : av < bv ? -sort.dir : 0;
+    });
+
+    if (!rows.length) {
+      bodyEl.innerHTML = '<div class="state">No ' + type + ' yet.</div>';
+      return;
+    }
+
+    var cols = type === 'bookings'
+      ? [['code', 'Code'], ['customerName', 'Guest'], ['phone', 'Phone'], ['checkInDate', 'Check-in'], ['checkOutDate', 'Check-out'], ['totalGuests', 'Guests'], ['status', 'Status'], ['paymentStatus', 'Payment'], ['totalAmount', 'Total']]
+      : [['code', 'Code'], ['name', 'Name'], ['phone', 'Phone'], ['inquiryDate', 'Date'], ['inquiryType', 'Type'], ['status', 'Status'], ['message', 'Message']];
+
+    var html = '<div class="table-scroll"><table><thead><tr>';
+    cols.forEach(function (c) {
+      html += '<th onclick="sortTable(\'' + type + '\',\'' + c[0] + '\')">' + c[1] + '</th>';
+    });
+    html += '</tr></thead><tbody>';
+    rows.forEach(function (row) {
+      html += '<tr>';
+      cols.forEach(function (c) {
+        var key = c[0], val = row[key];
+        if (key === 'checkInDate' || key === 'checkOutDate' || key === 'inquiryDate') val = fmtDate(val);
+        else if (key === 'status' || key === 'paymentStatus') val = badge(val || '—', statusKind(val));
+        else if (key === 'totalAmount') val = val != null ? '₹' + Number(val).toLocaleString('en-IN') : '—';
+        else if (key === 'message') val = '<td class="wrap">' + (val ? String(val).slice(0, 140) : '—') + '</td>'.replace('<td class="wrap">', '');
+        html += (key === 'message') ? ('<td class="wrap">' + (val || '—') + '</td>') : ('<td>' + (val != null && val !== '' ? val : '—') + '</td>');
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    bodyEl.innerHTML = html;
+  }
+
+  window.sortTable = function (type, key) {
+    var s = SORT[type];
+    s.dir = (s.key === key) ? -s.dir : -1;
+    s.key = key;
+    renderTable(type);
+  };
+
+  // ---- upload form (same behaviour as media-upload.html) ----
+  var fileInput = document.getElementById('fileInput');
+  var drop = document.getElementById('drop');
+  var preview = document.getElementById('preview');
+  var previewHolder = document.getElementById('previewHolder');
+  var fileNameEl = document.getElementById('fileName');
+  var removeBtn = document.getElementById('removeBtn');
+  var uploadForm = document.getElementById('uploadForm');
+  var uploadBtn = document.getElementById('uploadBtn');
+  var uploadMsg = document.getElementById('uploadMsg');
+  var chosen = null;
+  var MAX_BYTES = 200 * 1024 * 1024;
+
+  function showUploadMsg(text, kind) { uploadMsg.textContent = text; uploadMsg.className = 'upload-msg show ' + kind; }
+  function humanSize(b) { return b < 1024 ? b + ' B' : b < 1048576 ? (b / 1024).toFixed(0) + ' KB' : (b / 1048576).toFixed(1) + ' MB'; }
+
+  function setFile(file) {
+    uploadMsg.className = 'upload-msg';
+    if (!file) return;
+    var isImg = file.type.indexOf('image/') === 0, isVid = file.type.indexOf('video/') === 0;
+    if (!isImg && !isVid) { showUploadMsg('Please choose an image or a video file.', 'err'); return; }
+    if (file.size > MAX_BYTES) { showUploadMsg('That file is larger than 200 MB.', 'err'); return; }
+    chosen = file;
+    previewHolder.innerHTML = '';
+    var el = document.createElement(isImg ? 'img' : 'video');
+    el.src = URL.createObjectURL(file);
+    if (isVid) { el.controls = true; el.playsInline = true; }
+    previewHolder.appendChild(el);
+    fileNameEl.textContent = file.name + ' · ' + humanSize(file.size);
+    preview.classList.add('show');
+    drop.style.display = 'none';
+  }
+  function resetUpload() { chosen = null; fileInput.value = ''; preview.classList.remove('show'); previewHolder.innerHTML = ''; drop.style.display = ''; }
+
+  drop.addEventListener('click', function () { fileInput.click(); });
+  fileInput.addEventListener('change', function () { setFile(fileInput.files[0]); });
+  removeBtn.addEventListener('click', resetUpload);
+  ['dragenter', 'dragover'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add('drag'); }); });
+  ['dragleave', 'drop'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove('drag'); }); });
+  drop.addEventListener('drop', function (e) { if (e.dataTransfer && e.dataTransfer.files[0]) setFile(e.dataTransfer.files[0]); });
+
+  uploadForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    uploadMsg.className = 'upload-msg';
+    if (!chosen) { showUploadMsg('Please choose a photo or video first.', 'err'); return; }
+    if (!document.getElementById('title').value.trim()) { showUploadMsg('Please add a title.', 'err'); return; }
+
+    var fd = new FormData();
+    fd.append('file', chosen, chosen.name);
+    fd.append('title', document.getElementById('title').value.trim());
+    fd.append('category', document.getElementById('category').value);
+    fd.append('credit', document.getElementById('credit').value.trim());
+    fd.append('caption', document.getElementById('caption').value.trim());
+    fd.append('hasPeople', document.getElementById('hasPeople').checked ? 'yes' : 'no');
+    fd.append('mediaType', chosen.type.indexOf('video/') === 0 ? 'video' : 'photo');
+    fd.append('fileName', chosen.name);
+    fd.append('mimeType', chosen.type);
+    fd.append('sizeKB', String(Math.round(chosen.size / 1024)));
+
+    uploadBtn.disabled = true;
+    uploadBtn.textContent = 'Uploading…';
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', UPLOAD_URL, true);
+    xhr.upload.onprogress = function (ev) { if (ev.lengthComputable) uploadBtn.textContent = 'Uploading… ' + Math.round((ev.loaded / ev.total) * 100) + '%'; };
+    xhr.onload = function () {
+      uploadBtn.disabled = false; uploadBtn.textContent = 'Upload to gallery';
+      if (xhr.status >= 200 && xhr.status < 300) {
+        showUploadMsg('✅ Uploaded! It will show as "pending review" until approved.', 'ok');
+        uploadForm.reset(); resetUpload();
+      } else {
+        showUploadMsg('Upload failed (' + xhr.status + '). Please try again.', 'err');
+      }
+    };
+    xhr.onerror = function () { uploadBtn.disabled = false; uploadBtn.textContent = 'Upload to gallery'; showUploadMsg('Network error. Please try again.', 'err'); };
+    xhr.send(fd);
+  });
+})();
+</script>
+
+<script type="module">
+  import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+  // "KVA · Staff Assistant" n8n workflow - internal only, not linked anywhere on the public site
+  createChat({
+    webhookUrl: 'https://aryandakhare.app.n8n.cloud/webhook/07343e1e-decf-4082-8194-8825193857bc/chat',
+    target: '#n8n-chat-staff',
+    mode: 'fullscreen',
+    loadPreviousSession: true,
+    showWelcomeScreen: false,
+    defaultLanguage: 'en',
+    initialMessages: [
+      'Staff assistant ready. Give me a name/phone/code to look up an enquiry or booking, or tell me to confirm one once payment is collected.',
+    ],
+    i18n: {
+      en: {
+        title: 'Staff Assistant',
+        subtitle: 'Enquiries · Bookings · Payments',
+        inputPlaceholder: 'e.g. Ramesh Patil ka booking confirm karo, total 4500, advance 2000…',
+        getStarted: 'New conversation',
+        closeButtonTooltip: 'Close',
+      },
+    },
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kshanbhar Vishranti Agro Tourism</title>
+<meta name="description" content="A 14-acre organic family farm-stay at Village Dhanora, Tal. Rajura, Maharashtra. Day visits, overnight stays, farm activities and home-style meals.">
+<!--
+  Kshanbhar Vishranti Agro Tourism — main website.
+  Host this file on any static host (Netlify / Cloudflare Pages / tiiny.host / your own domain).
+
+  Things to double-check / personalise before going live:
+  - Instagram / Facebook URLs below are PLACEHOLDERS from initial setup - replace with the real profile links.
+  - WhatsApp chat button messages the AI assistant's business number (+91 96897 70186) - that's the
+    number the "KVA · Guest Assistant (WhatsApp)" n8n workflow listens on. The phone/call number
+    shown for the owner is +91 93221 54513 (Sharda Eknath Dakhare) - a different number by design.
+  - Voice assistant widget = ElevenLabs agent agent_3601m19jc1refemt184t4ystkfax (same as
+    https://fuchsia-dotty-33.tiiny.site). Add this site's real domain to the agent's Allowlist once hosted.
+  - Google Map is an address-based embed (no API key needed). Replace with exact coordinates if you
+    add them to MongoDB `settings.geo` later.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#0E4A43; --green-dark:#0A3733; --green-light:#E7F0EC;
+    --cream:#FBF8F1; --paper:#FFFFFF;
+    --ink:#16241F; --muted:#5B6E64; --line:#DFE6DF;
+    --accent:#C0532E; --accent-dark:#9C3F21;
+    --gold:#C99A3B;
+    --radius:18px; --radius-sm:12px;
+    --shadow: 0 12px 32px -14px rgba(15,35,28,.22);
+    --shadow-sm: 0 2px 10px rgba(15,35,28,.08);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; color:var(--ink); background:var(--cream);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.serif{font-family:'Fraunces',Georgia,'Iowan Old Style',serif}
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  .container{max-width:1180px;margin:0 auto;padding-inline:24px}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--green);
+    background:var(--green-light);padding:6px 14px;border-radius:999px;
+  }
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:13px 24px;border-radius:999px;font-weight:600;font-size:.95rem;
+    text-decoration:none;border:1.5px solid transparent;cursor:pointer;transition:transform .12s,box-shadow .12s,background .15s;
+    white-space:nowrap;
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn-primary{background:var(--green);color:#fff;box-shadow:var(--shadow-sm)}
+  .btn-primary:hover{background:var(--green-dark)}
+  .btn-whatsapp{background:#25D366;color:#fff;box-shadow:var(--shadow-sm)}
+  .btn-whatsapp:hover{background:#1DA851}
+  .btn-outline{background:transparent;border-color:rgba(255,255,255,.55);color:#fff}
+  .btn-outline:hover{background:rgba(255,255,255,.12)}
+  .btn-ghost{background:#fff;border-color:var(--line);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--green)}
+  .btn-block{width:100%}
+
+  /* ---------- top bar ---------- */
+  .topbar{background:var(--green-dark);color:#EFE8D8;font-size:.82rem}
+  .topbar .container{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:8px;flex-wrap:wrap}
+  .topbar-links{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .topbar a{text-decoration:none;opacity:.92;display:inline-flex;align-items:center;gap:6px}
+  .topbar a:hover{opacity:1;text-decoration:underline}
+  .social-row{display:flex;gap:10px}
+  .social-dot{
+    width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+    font-size:13px;color:#fff;text-decoration:none;flex:none;
+  }
+
+  /* ---------- header ---------- */
+  header.site{position:sticky;top:0;z-index:50;background:rgba(251,248,241,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding-block:14px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+  .brand .mark{width:40px;height:40px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;flex:none}
+  .brand .name{font-family:'Fraunces',serif;font-weight:600;font-size:1.15rem;line-height:1.15}
+  .brand .name small{display:block;font-family:'Inter',sans-serif;font-weight:500;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  nav.links{display:flex;align-items:center;gap:28px}
+  nav.links a{text-decoration:none;color:var(--ink);font-weight:500;font-size:.94rem;opacity:.85}
+  nav.links a:hover{opacity:1;color:var(--green)}
+  .nav-cta{display:flex;align-items:center;gap:10px}
+  .hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px;color:var(--ink)}
+  .mobile-menu{display:none;flex-direction:column;gap:2px;padding:6px 24px 18px;border-top:1px solid var(--line)}
+  .mobile-menu a{padding:12px 4px;text-decoration:none;color:var(--ink);font-weight:500;border-bottom:1px solid var(--line)}
+  .mobile-menu.open{display:flex}
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;overflow:hidden;color:#fff;
+    background:
+      linear-gradient(180deg, rgba(10,55,51,.72) 0%, rgba(10,55,51,.86) 60%, var(--cream) 100%),
+      radial-gradient(1100px 500px at 15% 0%, #1c6a61 0%, transparent 60%),
+      var(--green);
+    padding-block:92px 130px;
+  }
+  .hero .container{position:relative;z-index:1;max-width:820px}
+  .hero h1{font-size:clamp(2.1rem,5vw,3.4rem);line-height:1.08;margin:18px 0 18px;font-weight:600}
+  .hero p.lead{font-size:1.14rem;color:#E9F1EC;max-width:600px;margin:0 0 34px}
+  .hero-ctas{display:flex;flex-wrap:wrap;gap:14px}
+  .hero-facts{display:flex;flex-wrap:wrap;gap:28px;margin-top:52px;padding-top:28px;border-top:1px solid rgba(255,255,255,.22)}
+  .hero-fact strong{display:block;font-family:'Fraunces',serif;font-size:1.5rem}
+  .hero-fact span{font-size:.82rem;color:#CFE3DC}
+
+  section{padding-block:88px}
+  .section-head{max-width:640px;margin:0 0 44px}
+  .section-head h2{font-size:clamp(1.7rem,3.4vw,2.3rem);margin:14px 0 12px;font-weight:600}
+  .section-head p{color:var(--muted);font-size:1.03rem}
+  .section-head.center{margin-inline:auto;text-align:center}
+
+  /* ---------- about ---------- */
+  .about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+  .about-photo{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);aspect-ratio:4/5;background:linear-gradient(160deg,#cfe0d6,#9fb8a9)}
+  .about-photo img{width:100%;height:100%;object-fit:cover}
+  .stat-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
+  .stat-strip div{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-sm);padding:16px;text-align:center}
+  .stat-strip strong{display:block;font-family:'Fraunces',serif;font-size:1.4rem;color:var(--green)}
+  .stat-strip span{font-size:.78rem;color:var(--muted)}
+  .host-card{
+    margin-top:28px;display:flex;gap:16px;align-items:center;background:var(--paper);
+    border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-sm)
+  }
+  .host-avatar{width:58px;height:58px;border-radius:50%;background:var(--gold);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:1.3rem;flex:none}
+  .host-card h4{margin:0 0 2px;font-size:1.02rem}
+  .host-card p{margin:0;color:var(--muted);font-size:.88rem}
+
+  /* ---------- activities ---------- */
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
+  .act-card{
+    background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 24px;box-shadow:var(--shadow-sm);transition:transform .15s,box-shadow .15s;position:relative
+  }
+  .act-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  .act-icon{width:52px;height:52px;border-radius:14px;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px}
+  .act-card h3{font-size:1.08rem;margin:0 0 8px;font-weight:600;font-family:'Inter',sans-serif}
+  .act-card p{color:var(--muted);font-size:.92rem;margin:0 0 16px}
+  .act-meta{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px dashed var(--line);font-size:.85rem}
+  .act-meta .price{font-weight:700;color:var(--green)}
+  .tag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:var(--gold);color:#fff;padding:3px 9px;border-radius:999px;position:absolute;top:18px;right:18px}
+
+  /* ---------- day trip ---------- */
+  .daytrip{background:var(--green-light);border-radius:24px;padding:40px}
+  .timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:20px;margin-top:30px}
+  .timeline .step{background:var(--paper);border-radius:var(--radius-sm);padding:18px;border:1px solid var(--line)}
+  .timeline .step .time{font-family:'Fraunces',serif;color:var(--green);font-weight:600;font-size:1.05rem}
+  .timeline .step p{margin:6px 0 0;font-size:.86rem;color:var(--muted)}
+
+  /* ---------- packages / stay ---------- */
+  .pkg-grid{display:grid;grid-template-columns:1.15fr .85fr .85fr;gap:22px;align-items:stretch}
+  .pkg-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
+  .pkg-card.featured{background:var(--green);color:#fff;border-color:var(--green)}
+  .pkg-card h3{margin:0 0 6px;font-size:1.25rem}
+  .pkg-card .price-row{display:flex;align-items:baseline;gap:6px;margin:14px 0}
+  .pkg-card .price-row .amt{font-family:'Fraunces',serif;font-size:2rem;font-weight:600}
+  .pkg-card .price-row .unit{font-size:.82rem;opacity:.75}
+  .pkg-card ul{list-style:none;margin:0 0 22px;padding:0;display:flex;flex-direction:column;gap:9px;font-size:.9rem}
+  .pkg-card ul li{display:flex;gap:9px;align-items:flex-start}
+  .pkg-card ul li .dot{margin-top:6px;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.6;flex:none}
+  .pkg-card small.note{opacity:.7;font-size:.78rem;display:block;margin-top:auto;padding-top:14px}
+
+  /* ---------- offers ---------- */
+  .offer-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+  .offer-card{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:var(--radius);padding:24px}
+  .offer-card .code{display:inline-block;background:rgba(255,255,255,.18);padding:4px 12px;border-radius:8px;font-family:monospace;font-size:.85rem;margin-top:10px;letter-spacing:.03em}
+
+  /* ---------- facilities ---------- */
+  .fac-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+  .fac-item{text-align:center;padding:22px 14px}
+  .fac-item .ic{width:56px;height:56px;border-radius:50%;background:var(--paper);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px;box-shadow:var(--shadow-sm)}
+  .fac-item h4{margin:0 0 4px;font-size:.96rem}
+  .fac-item p{margin:0;font-size:.82rem;color:var(--muted)}
+
+  /* ---------- gallery ---------- */
+  .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:150px;gap:12px}
+  .gallery-grid a{border-radius:14px;overflow:hidden;display:block;position:relative;background:linear-gradient(160deg,#cfe0d6,#9fb8a9)}
+  .gallery-grid img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+  .gallery-grid a:hover img{transform:scale(1.06)}
+  .gallery-grid .big{grid-column:span 2;grid-row:span 2}
+  .gallery-grid .placeholder{display:flex;align-items:center;justify-content:center;font-size:30px;color:#fff}
+
+  /* ---------- testimonial ---------- */
+  .testimonial{background:var(--green);color:#fff;border-radius:28px;padding:56px;display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:center}
+  .testimonial .stars{color:var(--gold);font-size:1.1rem;letter-spacing:2px}
+  .testimonial blockquote{font-family:'Fraunces',serif;font-size:1.35rem;line-height:1.5;margin:14px 0 18px;font-weight:400}
+  .testimonial .quote-mark{font-family:'Fraunces',serif;font-size:4.5rem;line-height:1;color:var(--gold);opacity:.85}
+  .testimonial cite{font-style:normal;font-weight:600;opacity:.9}
+
+  /* ---------- contact ---------- */
+  .contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+  .contact-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-sm)}
+  .contact-card h3{margin:0 0 6px;font-size:1.08rem;display:flex;align-items:center;gap:10px}
+  .contact-card p{color:var(--muted);font-size:.9rem;margin:0 0 16px}
+  .info-row{display:flex;gap:12px;align-items:flex-start;margin-bottom:16px}
+  .info-row .ic{width:38px;height:38px;border-radius:10px;background:var(--green-light);color:var(--green);display:flex;align-items:center;justify-content:center;flex:none}
+  .info-row div strong{display:block;font-size:.92rem}
+  .info-row div span{font-size:.86rem;color:var(--muted)}
+  .map-embed{border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--line);margin-top:6px}
+  .map-embed iframe{width:100%;height:230px;border:0;display:block}
+  .voice-box{background:var(--green-light);border-radius:var(--radius-sm);padding:22px;text-align:center}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--green-dark);color:#CFE3DC;padding-block:56px 26px;font-size:.88rem}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px}
+  footer h5{color:#fff;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;margin:0 0 16px}
+  footer a{text-decoration:none;color:#CFE3DC;opacity:.85}
+  footer a:hover{opacity:1;text-decoration:underline}
+  footer ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.14);margin-top:40px;padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:.8rem;opacity:.75}
+
+  /* ---------- floating whatsapp ---------- */
+  .float-wa{
+    position:fixed;bottom:22px;right:22px;z-index:60;background:#25D366;color:#fff;
+    width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 10px 24px -6px rgba(0,0,0,.35);font-size:26px;text-decoration:none;
+  }
+  .float-wa:hover{background:#1DA851}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:980px){
+    .about-grid,.contact-wrap{grid-template-columns:1fr}
+    .about-photo{aspect-ratio:16/9}
+    .pkg-grid{grid-template-columns:1fr}
+    .testimonial{grid-template-columns:1fr;text-align:center;padding:36px}
+    .testimonial .quote-mark{display:none}
+    .footer-grid{grid-template-columns:1fr 1fr}
+    .gallery-grid{grid-template-columns:repeat(2,1fr)}
+    .gallery-grid .big{grid-column:span 2;grid-row:span 1}
+  }
+  @media (max-width:760px){
+    nav.links,.nav-cta .btn-ghost-desktop{display:none}
+    .hamburger{display:inline-flex}
+    section{padding-block:56px}
+    .hero{padding-block:64px 90px}
+    .footer-grid{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-links">
+      <a href="tel:+919322154513">📞 +91 93221 54513</a>
+      <a href="mailto:stay@kshanbharvishranti.com">✉️ stay@kshanbharvishranti.com</a>
+      <span>📍 Village Dhanora, Tal. Rajura, Chandrapur</span>
+    </div>
+    <div class="social-row">
+      <a class="social-dot" style="background:#25D366" href="https://wa.me/919689770186?text=Hi!%20I%27d%20like%20to%20know%20more%20about%20visiting%20the%20farm." title="WhatsApp us" aria-label="WhatsApp">💬</a>
+      <a class="social-dot" style="background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af)" href="https://instagram.com/kshanbharvishranti" title="Instagram" aria-label="Instagram" target="_blank" rel="noopener">📷</a>
+      <a class="social-dot" style="background:#1877F2;font-family:Georgia,serif;font-weight:700" href="https://facebook.com/kshanbharvishranti" title="Facebook" aria-label="Facebook" target="_blank" rel="noopener">f</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ HEADER ============ -->
+<header class="site">
+  <div class="container nav">
+    <a href="#top" class="brand">
+      <span class="mark">🌾</span>
+      <span class="name">Kshanbhar Vishranti<small>Agro Tourism</small></span>
+    </a>
+    <nav class="links">
+      <a href="#about">About</a>
+      <a href="#activities">Activities</a>
+      <a href="#daytrip">Day Trip</a>
+      <a href="#packages">Packages &amp; Stay</a>
+      <a href="#facilities">Facilities</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-ghost-desktop" href="https://fuchsia-dotty-33.tiiny.site" target="_blank" rel="noopener">🎙️ Call Agent</a>
+      <a class="btn btn-whatsapp" href="https://wa.me/919689770186?text=Hi!%20I%27d%20like%20to%20know%20more%20about%20visiting%20the%20farm." target="_blank" rel="noopener">💬 Chat on WhatsApp</a>
+      <button class="hamburger" id="menuBtn" aria-label="Menu">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about">About</a>
+    <a href="#activities">Activities</a>
+    <a href="#daytrip">Day Trip</a>
+    <a href="#packages">Packages &amp; Stay</a>
+    <a href="#facilities">Facilities</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#contact">Contact</a>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<div id="top"></div>
+<section class="hero">
+  <div class="container">
+    <span class="eyebrow" style="background:rgba(255,255,255,.14);color:#fff">🌿 Village Dhanora · Tal. Rajura · Chandrapur District</span>
+    <h1>क्षणभर विश्रांती — a moment of rest, close to the soil.</h1>
+    <p class="lead">A 14-acre organic family farm where city families and school groups get an honest, hands-on taste of village life — bullock cart rides, farming demos, pottery, birdwatching, home-style Maharashtrian meals and cottage stays.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-whatsapp" href="https://wa.me/919689770186?text=Hi!%20I%27d%20like%20to%20plan%20a%20visit." target="_blank" rel="noopener">💬 Chat on WhatsApp</a>
+      <a class="btn btn-outline" href="https://fuchsia-dotty-33.tiiny.site" target="_blank" rel="noopener">🎙️ Talk to our Voice Assistant</a>
+      <a class="btn btn-outline" href="#packages">See Packages</a>
+    </div>
+    <div class="hero-facts">
+      <div class="hero-fact"><strong>2019</strong><span>Welcoming guests since</span></div>
+      <div class="hero-fact"><strong>14 acres</strong><span>Organic working farm</span></div>
+      <div class="hero-fact"><strong>120 / 18</strong><span>Day visitors / overnight guests</span></div>
+      <div class="hero-fact"><strong>8 AM – 8 PM</strong><span>Open every day</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="container about-grid">
+    <div>
+      <div class="about-photo">
+        <img src="https://lh3.googleusercontent.com/drive-storage/AJQWtBMy0fiO6Qy-GK2mY5fRAo7Vyx0-whJ4UvEKdPL03xY17UGlAO94Bec193h9rvoHaCivWgEIIQiB3RJa85uAKRAjOFRCfjQ1VdQXTx_OkFGTmK2ylQ=s1200" alt="View across the farm at Kshanbhar Vishranti Agro Tourism" loading="lazy">
+      </div>
+      <div class="stat-strip">
+        <div><strong>4+</strong><span>Signature activities</span></div>
+        <div><strong>2</strong><span>Stay types</span></div>
+        <div><strong>5★</strong><span>Guest rating</span></div>
+      </div>
+    </div>
+    <div>
+      <span class="eyebrow">Our Story</span>
+      <h2>A working farm, opened up for you to slow down in.</h2>
+      <p>Kshanbhar Vishranti — "a moment of rest" — is a family-run agrotourism farm at Village Dhanora, about 25 km from Rajura via the Rajura–Sindhi Road (nearest town, Virur, is just 5 km away). Started in 2019, the farm grows pomegranate, custard apple, seasonal vegetables and fodder, and keeps indigenous cattle, goats and country poultry.</p>
+      <p>Our aim is simple: give city families and school groups an honest, hands-on taste of farm life, run on organic principles — while creating steady, year-round work for people from Dhanora village. We're registered under the Maharashtra Agri-Tourism Policy.</p>
+      <div class="host-card">
+        <div class="host-avatar">SD</div>
+        <div>
+          <h4>Sharda Eknath Dakhare</h4>
+          <p>Owner &amp; Host — "Come hungry, leave with mud on your shoes and a full heart. That's the only itinerary we promise."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ACTIVITIES ============ -->
+<section id="activities" style="background:var(--paper)">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">What You'll Do</span>
+      <h2>Activities at the farm</h2>
+      <p>Hands-on experiences led by our own farmers, guides and craftspeople — priced per person, bookable individually or as part of a package.</p>
+    </div>
+    <div class="card-grid">
+      <div class="act-card">
+        <div class="act-icon">🐂</div>
+        <h3>Traditional Bullock Cart Ride</h3>
+        <p>A gentle ride along the field bunds while the driver shares stories of village farming life. A favourite with children and grandparents alike.</p>
+        <div class="act-meta"><span>⏱ 25–30 min · All ages</span><span class="price">₹150 / ₹100</span></div>
+      </div>
+      <div class="act-card">
+        <div class="act-icon">🌱</div>
+        <h3>Organic Farming Demo &amp; Hands-on Session</h3>
+        <p>Sow, transplant and harvest using organic methods with our farmers — seed to soil, the real way. Take home what you plant.</p>
+        <div class="act-meta"><span>⏱ 45–60 min · Age 4+</span><span class="price">₹250 / ₹150</span></div>
+      </div>
+      <div class="act-card">
+        <div class="act-icon">🏺</div>
+        <h3>Hands-on Pottery Workshop</h3>
+        <p>Throw a pot on the wheel with a third-generation village potter, indoors in our craft shed. Fired pieces ready in a week.</p>
+        <div class="act-meta"><span>⏱ 60–75 min · Age 6+</span><span class="price">₹400 / ₹300</span></div>
+      </div>
+      <div class="act-card">
+        <div class="act-icon">🐦</div>
+        <h3>Early Morning Birdwatching Walk</h3>
+        <p>A quiet guided walk at first light to spot resident and migratory birds across the orchards and pond.</p>
+        <div class="act-meta"><span>⏱ 75–90 min · Age 8+</span><span class="price">₹300 / ₹200</span></div>
+      </div>
+      <div class="act-card">
+        <span class="tag">Oct – Mar</span>
+        <div class="act-icon">🔥</div>
+        <h3>Evening Bonfire with Folk Music</h3>
+        <p>A group bonfire with local folk musicians and roasted farm snacks under an open sky. Winter season only.</p>
+        <div class="act-meta"><span>⏱ 60 min · Groups</span><span class="price">₹2,500 / group</span></div>
+      </div>
+      <div class="act-card" style="display:flex;flex-direction:column;justify-content:center;text-align:center;background:var(--green-light);border-style:dashed">
+        <div class="act-icon" style="margin-inline:auto">✨</div>
+        <h3>Want something custom?</h3>
+        <p>School trips, corporate offsites and celebrations — tell us the occasion and we'll build a day around it.</p>
+        <a class="btn btn-ghost" href="https://wa.me/919689770186?text=Hi!%20I%27d%20like%20a%20custom%20plan%20for%20a%20group%20visit." target="_blank" rel="noopener">Ask us on WhatsApp</a>
+      </div>
+    </div>
+    <p style="text-align:center;color:var(--muted);font-size:.85rem;margin-top:26px">Prices shown are per adult / per child. Group and school rates available on request.</p>
+  </div>
+</section>
+
+<!-- ============ DAY TRIP ============ -->
+<section id="daytrip">
+  <div class="container">
+    <div class="daytrip">
+      <span class="eyebrow">No Overnight Needed</span>
+      <h2 class="serif" style="font-size:1.9rem;font-weight:600;margin:14px 0 6px">A perfect day trip from the city</h2>
+      <p style="color:var(--muted);max-width:640px">Most guests arrive by mid-morning and head back after an early dinner. Here's a typical day — mix and match activities as you like.</p>
+      <div class="timeline">
+        <div class="step"><div class="time">10:00 AM</div><p>Arrive, welcome drink and a short farm walk.</p></div>
+        <div class="step"><div class="time">10:30 AM</div><p>Organic Farming Demo — get your hands in the soil.</p></div>
+        <div class="step"><div class="time">12:00 PM</div><p>Traditional Bullock Cart Ride along the field bunds.</p></div>
+        <div class="step"><div class="time">1:00 PM</div><p>Home-style Maharashtrian thali lunch (on request).</p></div>
+        <div class="step"><div class="time">2:30 PM</div><p>Hands-on Pottery Workshop at the craft shed.</p></div>
+        <div class="step"><div class="time">4:30 PM</div><p>Tea, a stroll through the orchard, and departure.</p></div>
+      </div>
+      <div style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap">
+        <a class="btn btn-primary" href="https://wa.me/919689770186?text=Hi!%20I%27d%20like%20to%20plan%20a%20day%20trip." target="_blank" rel="noopener">Plan my day trip on WhatsApp</a>
+        <a class="btn btn-ghost" href="#activities">See all activity prices</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PACKAGES & STAY ============ -->
+<section id="packages" style="background:var(--paper)">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">Stay With Us</span>
+      <h2>Packages &amp; overnight stays</h2>
+      <p>One signature overnight package, plus two accommodation styles if you'd rather build your own stay.</p>
+    </div>
+    <div class="pkg-grid">
+      <div class="pkg-card featured">
+        <span class="eyebrow" style="background:rgba(255,255,255,.16);color:#fff">Most Popular · 1 Night</span>
+        <h3 style="margin-top:14px">Weekend Farm Escape</h3>
+        <p style="opacity:.85;font-size:.9rem;margin:0">Cottage stay, all meals and three signature activities — our most complete experience.</p>
+        <div class="price-row"><span class="amt">₹4,500</span><span class="unit">/ adult</span></div>
+        <div style="font-size:.85rem;opacity:.85;margin-top:-10px;margin-bottom:14px">₹2,800 / child · ₹8,500 / couple · min 2 guests</div>
+        <ul>
+          <li><span class="dot"></span>1 night in an Orchard Cottage</li>
+          <li><span class="dot"></span>Welcome drink, dinner, breakfast &amp; lunch</li>
+          <li><span class="dot"></span>Bullock cart ride + farming demo + birdwatching walk</li>
+          <li><span class="dot"></span>Guided farm tour</li>
+        </ul>
+        <small class="note">Excludes transport, pottery workshop, bonfire &amp; personal expenses.</small>
+        <a class="btn btn-outline" style="margin-top:16px;border-color:#fff" href="https://wa.me/919689770186?text=Hi!%20I%27d%20like%20to%20book%20the%20Weekend%20Farm%20Escape." target="_blank" rel="noopener">Book this package</a>
+      </div>
+      <div class="pkg-card">
+        <span class="eyebrow">Stay Only</span>
+        <h3 style="margin-top:14px">Orchard Cottage</h3>
+        <p style="color:var(--muted);font-size:.9rem;margin:0">AC cottage with attached bath, sleeps 2–4.</p>
+        <div class="price-row"><span class="amt" style="color:var(--green)">₹3,500</span><span class="unit" style="color:var(--muted)">/ night</span></div>
+        <ul style="color:var(--ink)">
+          <li><span class="dot"></span>1 queen bed + 2 floor mattresses</li>
+          <li><span class="dot"></span>Attached bathroom, hot water, AC</li>
+          <li><span class="dot"></span>Private verandah, tea/coffee kit</li>
+        </ul>
+        <small class="note" style="color:var(--muted)">Meals &amp; activities booked separately.</small>
+      </div>
+      <div class="pkg-card">
+        <span class="eyebrow">Stay Only</span>
+        <h3 style="margin-top:14px">Riverside Safari Tent</h3>
+        <p style="color:var(--muted);font-size:.9rem;margin:0">Camping-style tent, sleeps 2–3.</p>
+        <div class="price-row"><span class="amt" style="color:var(--green)">₹2,200</span><span class="unit" style="color:var(--muted)">/ night</span></div>
+        <ul style="color:var(--ink)">
+          <li><span class="dot"></span>2 single camp cots, solar lantern</li>
+          <li><span class="dot"></span>Verandah deck, shared bathroom block</li>
+          <li><span class="dot"></span>Closest to the riverside walk</li>
+        </ul>
+        <small class="note" style="color:var(--muted)">Meals &amp; activities booked separately.</small>
+      </div>
+    </div>
+
+    <div class="offer-strip" style="margin-top:34px">
+      <div class="offer-card">
+        <span class="eyebrow" style="background:rgba(255,255,255,.2);color:#fff">First Visit</span>
+        <h3 style="margin:10px 0 4px">10% off with WELCOME10</h3>
+        <p style="margin:0;opacity:.9;font-size:.9rem">Use this code on your first booking with us.</p>
+        <span class="code">WELCOME10</span>
+      </div>
+      <div class="offer-card" style="background:linear-gradient(135deg,var(--green),var(--green-dark))">
+        <span class="eyebrow" style="background:rgba(255,255,255,.2);color:#fff">Jun – Sep</span>
+        <h3 style="margin:10px 0 4px">25% off — Monsoon Special 2026</h3>
+        <p style="margin:0;opacity:.9;font-size:.9rem">Auto-applied on weekday overnight stays during the monsoon.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FACILITIES ============ -->
+<section id="facilities">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">On the Farm</span>
+      <h2>Facilities at the farm</h2>
+      <p>Everything you need for a comfortable, safe visit — nothing you don't.</p>
+    </div>
+    <div class="fac-grid">
+      <div class="fac-item"><div class="ic">🛏️</div><h4>Cottages &amp; Tents</h4><p>AC cottages and safari-style tents</p></div>
+      <div class="fac-item"><div class="ic">🍽️</div><h4>Farm-to-Table Meals</h4><p>Home-style Maharashtrian thalis</p></div>
+      <div class="fac-item"><div class="ic">🧭</div><h4>Guided Tours</h4><p>Trained guides for every activity</p></div>
+      <div class="fac-item"><div class="ic">🅿️</div><h4>On-site Parking</h4><p>Free parking for cars &amp; buses</p></div>
+      <div class="fac-item"><div class="ic">🩹</div><h4>First Aid &amp; Safety Briefing</h4><p>Safety briefing before every activity</p></div>
+      <div class="fac-item"><div class="ic">🔥</div><h4>Bonfire &amp; Evening Programs</h4><p>Seasonal music &amp; storytelling</p></div>
+      <div class="fac-item"><div class="ic">🐄</div><h4>Working Livestock</h4><p>Indigenous cattle, goats &amp; poultry</p></div>
+      <div class="fac-item"><div class="ic">🚻</div><h4>Clean Restrooms</h4><p>Maintained restroom blocks on site</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section id="gallery" style="background:var(--paper)">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">A Glimpse</span>
+      <h2>From around the farm</h2>
+      <p>A few recent moments — follow us on Instagram for the full album.</p>
+    </div>
+    <div class="gallery-grid">
+      <a class="big" href="https://drive.google.com/file/d/1O0JIriJhJ2tRl_bOBbuVo_-sTR7xssRy/view" target="_blank" rel="noopener">
+        <img src="https://lh3.googleusercontent.com/drive-storage/AJQWtBMy0fiO6Qy-GK2mY5fRAo7Vyx0-whJ4UvEKdPL03xY17UGlAO94Bec193h9rvoHaCivWgEIIQiB3RJa85uAKRAjOFRCfjQ1VdQXTx_OkFGTmK2ylQ=s1200" alt="Farm landscape at Kshanbhar Vishranti Agro" loading="lazy">
+      </a>
+      <a href="https://drive.google.com/file/d/1arUVrfjSDYEx9becB0C9RV9Af1PX49cn/view" target="_blank" rel="noopener">
+        <img src="https://lh3.googleusercontent.com/drive-storage/AJQWtBNAMZk9CZ17sNQ8wV_2YkR2nVxMWFY1qegKkw81GwAd5_zPm-3Kc9_VBpwy9GqTtouQeZ4qiHawqA556AuY02nFCEOdnnNKPCx7gsqLGtC1xPQY=s1200" alt="View of the farm" loading="lazy">
+      </a>
+      <div class="placeholder" style="background:linear-gradient(160deg,#e3c98e,#c0532e)">🐂</div>
+      <div class="placeholder" style="background:linear-gradient(160deg,#9fb8a9,#0E4A43)">🏺</div>
+      <div class="placeholder" style="background:linear-gradient(160deg,#cfe0d6,#5b6e64)">🐦</div>
+    </div>
+    <p style="text-align:center;color:var(--muted);font-size:.85rem;margin-top:20px">More photos are added regularly — the shaded tiles above will fill in as new activity photos are uploaded.</p>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIAL ============ -->
+<section>
+  <div class="container">
+    <div class="testimonial">
+      <div class="quote-mark">"</div>
+      <div>
+        <div class="stars">★★★★★</div>
+        <blockquote>"We did the Weekend Farm Escape with our two kids. The cottage was spotless, the food was simple and delicious, and the staff went out of their way for our lactose-intolerant daughter. The kids still talk about the bullock cart ride and pottery."</blockquote>
+        <cite>— Amit S., Weekend Farm Escape guest</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" style="background:var(--paper)">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">Get in Touch</span>
+      <h2>Plan your visit</h2>
+      <p>Call, WhatsApp, or talk to our voice assistant any time — we're here every day, 8 AM to 8 PM.</p>
+    </div>
+    <div class="contact-wrap">
+      <div class="contact-card">
+        <h3>📍 Visit us</h3>
+        <div class="info-row">
+          <div class="ic">📍</div>
+          <div><strong>Address</strong><span>Village Dhanora, Tal. Rajura, Chandrapur District, Maharashtra 442905 — 25 km / 30 min from Rajura via the Rajura–Sindhi Road. Nearest town: Virur (5 km).</span></div>
+        </div>
+        <div class="info-row">
+          <div class="ic">🕗</div>
+          <div><strong>Hours</strong><span>Open daily, 8:00 AM – 8:00 PM · Check-in 12:00 PM · Check-out 10:00 AM</span></div>
+        </div>
+        <div class="info-row">
+          <div class="ic">👤</div>
+          <div><strong>Owner</strong><span>Sharda Eknath Dakhare</span></div>
+        </div>
+        <div class="map-embed">
+          <iframe src="https://www.google.com/maps?q=Village+Dhanora,+Tal.+Rajura,+Chandrapur,+Maharashtra+442905&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map to Kshanbhar Vishranti Agro Tourism"></iframe>
+        </div>
+      </div>
+
+      <div class="contact-card">
+        <h3>💬 Talk to us</h3>
+        <p>Three ways to reach us — pick whichever's easiest.</p>
+        <div class="info-row">
+          <div class="ic">📞</div>
+          <div><strong>Call the farm</strong><span><a href="tel:+919322154513">+91 93221 54513</a> — Sharda Eknath Dakhare</span></div>
+        </div>
+        <div class="info-row">
+          <div class="ic" style="background:#DFF6E7;color:#1DA851">💬</div>
+          <div><strong>WhatsApp our assistant</strong><span>Instant answers on activities, prices &amp; bookings — <a href="https://wa.me/919689770186" target="_blank" rel="noopener">+91 96897 70186</a></span></div>
+        </div>
+        <a class="btn btn-whatsapp btn-block" style="margin-bottom:18px" href="https://wa.me/919689770186?text=Hi!%20I%27d%20like%20to%20know%20more%20about%20visiting%20the%20farm." target="_blank" rel="noopener">💬 Start WhatsApp Chat</a>
+
+        <div class="voice-box">
+          <div style="font-size:26px;margin-bottom:6px">🎙️</div>
+          <strong>Prefer to talk?</strong>
+          <p style="margin:6px 0 14px;font-size:.88rem">Speak with our voice assistant right in your browser.</p>
+          <elevenlabs-convai agent-id="agent_3601m19jc1refemt184t4ystkfax"></elevenlabs-convai>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <div class="brand" style="color:#fff;margin-bottom:14px">
+        <span class="mark" style="background:#fff;color:var(--green)">🌾</span>
+        <span class="name" style="color:#fff">Kshanbhar Vishranti<small style="color:#9FC2B5">Agro Tourism</small></span>
+      </div>
+      <p style="max-width:280px;opacity:.85">A 14-acre organic family farm at Village Dhanora, Tal. Rajura — day visits, overnight stays and hands-on farm experiences since 2019.</p>
+      <div class="social-row" style="margin-top:16px">
+        <a class="social-dot" style="background:#25D366" href="https://wa.me/919689770186" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
+        <a class="social-dot" style="background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af)" href="https://instagram.com/kshanbharvishranti" target="_blank" rel="noopener" aria-label="Instagram">📷</a>
+        <a class="social-dot" style="background:#1877F2;font-family:Georgia,serif;font-weight:700" href="https://facebook.com/kshanbharvishranti" target="_blank" rel="noopener" aria-label="Facebook">f</a>
+      </div>
+    </div>
+    <div>
+      <h5>Explore</h5>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#activities">Activities</a></li>
+        <li><a href="#daytrip">Day Trip</a></li>
+        <li><a href="#packages">Packages &amp; Stay</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="tel:+919322154513">📞 +91 93221 54513</a></li>
+        <li><a href="https://wa.me/919689770186">💬 +91 96897 70186 (WhatsApp)</a></li>
+        <li><a href="mailto:stay@kshanbharvishranti.com">✉️ stay@kshanbharvishranti.com</a></li>
+        <li><a href="https://fuchsia-dotty-33.tiiny.site" target="_blank" rel="noopener">🎙️ Talk to Voice Assistant</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Policies</h5>
+      <ul>
+        <li><span style="opacity:.85">Free cancellation up to 7 days before check-in</span></li>
+        <li><span style="opacity:.85">50% charge within 7 days of check-in</span></li>
+        <li><span style="opacity:.85">Registered under the Maharashtra Agri-Tourism Policy</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© <span id="year"></span> Kshanbhar Vishranti Agro Tourism. All rights reserved.</span>
+    <span>Village Dhanora, Tal. Rajura, Chandrapur District, Maharashtra 442905</span>
+    <a href="admin.html" style="opacity:.55">Staff Login</a>
+  </div>
+</footer>
+
+<!-- ============ FLOATING WHATSAPP ============ -->
+<a class="float-wa" href="https://wa.me/919689770186?text=Hi!%20I%27d%20like%20to%20know%20more%20about%20visiting%20the%20farm." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">💬</a>
+
+<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  var menuBtn = document.getElementById('menuBtn');
+  var mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', function () {
+    mobileMenu.classList.toggle('open');
+  });
+  mobileMenu.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { mobileMenu.classList.remove('open'); });
+  });
+</script>
+</body>
+</html>
