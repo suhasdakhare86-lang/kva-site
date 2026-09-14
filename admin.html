@@ -354,8 +354,9 @@
     }
 
     var cols = type === 'bookings'
-      ? [['code', 'Code'], ['customerName', 'Guest'], ['phone', 'Phone'], ['checkInDate', 'Check-in'], ['checkOutDate', 'Check-out'], ['totalGuests', 'Guests'], ['status', 'Status'], ['paymentStatus', 'Payment'], ['totalAmount', 'Total']]
+      ? [['code', 'Code'], ['customerName', 'Guest'], ['phone', 'Phone'], ['checkInDate', 'Check-in'], ['checkOutDate', 'Check-out'], ['totalGuests', 'Guests'], ['status', 'Status'], ['paymentStatus', 'Payment'], ['totalAmount', 'Total'], ['amountPaid', 'Paid'], ['outstandingAmount', 'Outstanding']]
       : [['code', 'Code'], ['name', 'Name'], ['phone', 'Phone'], ['inquiryDate', 'Date'], ['inquiryType', 'Type'], ['status', 'Status'], ['message', 'Message']];
+    var moneyCols = { totalAmount: 1, amountPaid: 1, outstandingAmount: 1 };
 
     var html = '<div class="table-scroll"><table><thead><tr>';
     cols.forEach(function (c) {
@@ -368,7 +369,13 @@
         var key = c[0], val = row[key];
         if (key === 'checkInDate' || key === 'checkOutDate' || key === 'inquiryDate') val = fmtDate(val);
         else if (key === 'status' || key === 'paymentStatus') val = badge(val || '—', statusKind(val));
-        else if (key === 'totalAmount') val = val != null ? '₹' + Number(val).toLocaleString('en-IN') : '—';
+        else if (key === 'outstandingAmount') {
+          var out = Number(val || 0);
+          val = out > 0
+            ? badge('₹' + out.toLocaleString('en-IN'), 'warn')
+            : badge('₹0', 'ok');
+        }
+        else if (moneyCols[key]) val = val != null ? '₹' + Number(val).toLocaleString('en-IN') : '—';
         else if (key === 'message') val = '<td class="wrap">' + (val ? String(val).slice(0, 140) : '—') + '</td>'.replace('<td class="wrap">', '');
         html += (key === 'message') ? ('<td class="wrap">' + (val || '—') + '</td>') : ('<td>' + (val != null && val !== '' ? val : '—') + '</td>');
       });
