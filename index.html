@@ -4,18 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kshanbhar Vishranti Agro Tourism</title>
-<meta name="description" content="A 14-acre organic family farm-stay at Village Dhanora, Tal. Rajura, Maharashtra. Day visits, overnight stays, farm activities and home-style meals.">
+<meta name="description" content="Day-visit farm picnic at Dhanora, near Virur Station, Rajura, Chandrapur. Rs 700/adult, Rs 400/child - sunflower fields, bullock cart, swimming, campfire and farm-fresh vegetarian food, 10:30 AM to 5 PM.">
 <!--
   Kshanbhar Vishranti Agro Tourism — main website.
-  Host this file on any static host (Netlify / Cloudflare Pages / tiiny.host / your own domain).
+  Host this file on any static host (GitHub Pages / Netlify / Cloudflare Pages / your own domain).
+
+  2026-10-02: rebuilt to match the FINAL business model (day-visit only, no overnight stay) per
+  the "KVA · Load Final KB → MongoDB" knowledge base - see MongoDB `knowledge_base` docs with
+  `source:'final-kb'` for the source of truth on pricing/policies/activities.
 
   Things to double-check / personalise before going live:
   - Instagram / Facebook URLs below are PLACEHOLDERS from initial setup - replace with the real profile links.
   - WhatsApp chat button messages the AI assistant's business number (+91 96897 70186) - that's the
     number the "KVA · Guest Assistant (WhatsApp)" n8n workflow listens on. The phone/call number
     shown for the owner is +91 93221 54513 (Sharda Eknath Dakhare) - a different number by design.
-  - Voice assistant widget = ElevenLabs agent agent_3601m19jc1refemt184t4ystkfax (same as
-    https://fuchsia-dotty-33.tiiny.site). Add this site's real domain to the agent's Allowlist once hosted.
+  - Voice assistant widget = ElevenLabs agent agent_3601m19jc1refemt184t4ystkfax.
   - Google Map is an address-based embed (no API key needed). Replace with exact coordinates if you
     add them to MongoDB `settings.geo` later.
 -->
@@ -155,7 +158,7 @@
   .timeline .step p{margin:6px 0 0;font-size:.86rem;color:var(--muted)}
 
   /* ---------- packages / stay ---------- */
-  .pkg-grid{display:grid;grid-template-columns:1.15fr .85fr .85fr;gap:22px;align-items:stretch}
+  .pkg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px;align-items:stretch}
   .pkg-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
   .pkg-card.featured{background:var(--green);color:#fff;border-color:var(--green)}
   .pkg-card h3{margin:0 0 6px;font-size:1.25rem}
@@ -252,7 +255,7 @@
     <div class="topbar-links">
       <a href="tel:+919322154513">📞 +91 93221 54513</a>
       <a href="mailto:stay@kshanbharvishranti.com">✉️ stay@kshanbharvishranti.com</a>
-      <span>📍 Village Dhanora, Tal. Rajura, Chandrapur</span>
+      <span>📍 Dhanora, near Virur Station, Rajura, Chandrapur 442905</span>
     </div>
     <div class="social-row">
       <a class="social-dot" style="background:#25D366" href="https://wa.me/919689770186?text=Hi!%20I%27d%20like%20to%20know%20more%20about%20visiting%20the%20farm." title="WhatsApp us" aria-label="WhatsApp">💬</a>
@@ -273,7 +276,7 @@
       <a href="#about">About</a>
       <a href="#activities">Activities</a>
       <a href="#daytrip">Day Trip</a>
-      <a href="#packages">Packages &amp; Stay</a>
+      <a href="#packages">Pricing</a>
       <a href="#facilities">Facilities</a>
       <a href="#gallery">Gallery</a>
       <a href="#contact">Contact</a>
@@ -290,7 +293,7 @@
     <a href="#about">About</a>
     <a href="#activities">Activities</a>
     <a href="#daytrip">Day Trip</a>
-    <a href="#packages">Packages &amp; Stay</a>
+    <a href="#packages">Pricing</a>
     <a href="#facilities">Facilities</a>
     <a href="#gallery">Gallery</a>
     <a href="#contact">Contact</a>
@@ -301,19 +304,19 @@
 <div id="top"></div>
 <section class="hero">
   <div class="container">
-    <span class="eyebrow" style="background:rgba(255,255,255,.14);color:#fff">🌿 Village Dhanora · Tal. Rajura · Chandrapur District</span>
-    <h1>क्षणभर विश्रांती — a moment of rest, close to the soil.</h1>
-    <p class="lead">A 14-acre organic family farm where city families and school groups get an honest, hands-on taste of village life — bullock cart rides, farming demos, pottery, birdwatching, home-style Maharashtrian meals and cottage stays.</p>
+    <span class="eyebrow" style="background:rgba(255,255,255,.14);color:#fff">🌻 Dhanora · Near Virur Station · Rajura · Chandrapur</span>
+    <h1>क्षणभर विश्रांती — a day in the sunflower fields.</h1>
+    <p class="lead">A 15-acre family farm between the Tadoba and Jogapur forests — a full-day picnic with a farm tour, bullock cart ride, swimming, campfire, village games and photos in our sunflower field. Pure vegetarian food included. Day visits only, 10:30 AM to 5 PM.</p>
     <div class="hero-ctas">
       <a class="btn btn-whatsapp" href="https://wa.me/919689770186?text=Hi!%20I%27d%20like%20to%20plan%20a%20visit." target="_blank" rel="noopener">💬 Chat on WhatsApp</a>
       <a class="btn btn-outline" href="https://elevenlabs.io/app/talk-to?agent_id=agent_3601m19jc1refemt184t4ystkfax" target="_blank" rel="noopener">🎙️ Talk to our Voice Assistant</a>
-      <a class="btn btn-outline" href="#packages">See Packages</a>
+      <a class="btn btn-outline" href="#packages">See Pricing</a>
     </div>
     <div class="hero-facts">
-      <div class="hero-fact"><strong>2019</strong><span>Welcoming guests since</span></div>
-      <div class="hero-fact"><strong>14 acres</strong><span>Organic working farm</span></div>
-      <div class="hero-fact"><strong>120 / 18</strong><span>Day visitors / overnight guests</span></div>
-      <div class="hero-fact"><strong>8 AM – 8 PM</strong><span>Open every day</span></div>
+      <div class="hero-fact"><strong>₹700 / ₹400</strong><span>Per adult / per child</span></div>
+      <div class="hero-fact"><strong>15 acres</strong><span>Working family farm</span></div>
+      <div class="hero-fact"><strong>10:30–5:00</strong><span>Day visit hours</span></div>
+      <div class="hero-fact"><strong>500</strong><span>Max guests for groups &amp; events</span></div>
     </div>
   </div>
 </section>
@@ -326,16 +329,16 @@
         <img src="https://lh3.googleusercontent.com/drive-storage/AJQWtBMy0fiO6Qy-GK2mY5fRAo7Vyx0-whJ4UvEKdPL03xY17UGlAO94Bec193h9rvoHaCivWgEIIQiB3RJa85uAKRAjOFRCfjQ1VdQXTx_OkFGTmK2ylQ=s1200" alt="View across the farm at Kshanbhar Vishranti Agro Tourism" loading="lazy">
       </div>
       <div class="stat-strip">
-        <div><strong>4+</strong><span>Signature activities</span></div>
-        <div><strong>2</strong><span>Stay types</span></div>
-        <div><strong>5★</strong><span>Guest rating</span></div>
+        <div><strong>7</strong><span>Things to do</span></div>
+        <div><strong>1 day</strong><span>Visit, no overnight</span></div>
+        <div><strong>4</strong><span>Languages spoken</span></div>
       </div>
     </div>
     <div>
       <span class="eyebrow">Our Story</span>
-      <h2>A working farm, opened up for you to slow down in.</h2>
-      <p>Kshanbhar Vishranti — "a moment of rest" — is a family-run agrotourism farm at Village Dhanora, about 25 km from Rajura via the Rajura–Sindhi Road (nearest town, Virur, is just 5 km away). Started in 2019, the farm grows pomegranate, custard apple, seasonal vegetables and fodder, and keeps indigenous cattle, goats and country poultry.</p>
-      <p>Our aim is simple: give city families and school groups an honest, hands-on taste of farm life, run on organic principles — while creating steady, year-round work for people from Dhanora village. We're registered under the Maharashtra Agri-Tourism Policy.</p>
+      <h2>A working farm, opened up for your family for the day.</h2>
+      <p>Kshanbhar Vishranti — "a moment of rest" — is a family-run farm in Dhanora village, near Virur Station in Rajura taluka, Chandrapur district, sitting between the Tadoba and Jogapur forest areas. The farm grows jowar (jwari), tur and sunflower, keeps orchards and pet animals, and the sunflower field is our best-loved spot for photos.</p>
+      <p>We host one kind of visit — a full day on the farm, 10:30 AM to 5 PM, with a farm tour, activities and vegetarian meals included. Our staff speak Marathi, Hindi, English and Telugu.</p>
       <div class="host-card">
         <div class="host-avatar">SD</div>
         <div>
@@ -352,49 +355,48 @@
   <div class="container">
     <div class="section-head center">
       <span class="eyebrow">What You'll Do</span>
-      <h2>Activities at the farm</h2>
-      <p>Hands-on experiences led by our own farmers, guides and craftspeople — priced per person, bookable individually or as part of a package.</p>
+      <h2>Everything included in your day</h2>
+      <p>No per-activity pricing here — every activity below is already included in your package price, from the moment you arrive to the moment you leave.</p>
     </div>
     <div class="card-grid">
       <div class="act-card">
+        <div class="act-icon">🚜</div>
+        <h3>Farm Tour &amp; Crop Picking</h3>
+        <p>Walk the fields with our farmers and pick fresh produce straight off the plant — jowar, tur and seasonal crops.</p>
+      </div>
+      <div class="act-card">
         <div class="act-icon">🐂</div>
-        <h3>Traditional Bullock Cart Ride</h3>
-        <p>A gentle ride along the field bunds while the driver shares stories of village farming life. A favourite with children and grandparents alike.</p>
-        <div class="act-meta"><span>⏱ 25–30 min · All ages</span><span class="price">₹150 / ₹100</span></div>
+        <h3>Bullock Cart Ride</h3>
+        <p>A traditional ride along the field bunds — a favourite with children and grandparents alike.</p>
       </div>
       <div class="act-card">
-        <div class="act-icon">🌱</div>
-        <h3>Organic Farming Demo &amp; Hands-on Session</h3>
-        <p>Sow, transplant and harvest using organic methods with our farmers — seed to soil, the real way. Take home what you plant.</p>
-        <div class="act-meta"><span>⏱ 45–60 min · Age 4+</span><span class="price">₹250 / ₹150</span></div>
+        <div class="act-icon">💦</div>
+        <h3>Swimming &amp; Rain Dance</h3>
+        <p>Cool off with a splash — swimming and a rain-dance area for the whole family.</p>
       </div>
       <div class="act-card">
-        <div class="act-icon">🏺</div>
-        <h3>Hands-on Pottery Workshop</h3>
-        <p>Throw a pot on the wheel with a third-generation village potter, indoors in our craft shed. Fired pieces ready in a week.</p>
-        <div class="act-meta"><span>⏱ 60–75 min · Age 6+</span><span class="price">₹400 / ₹300</span></div>
-      </div>
-      <div class="act-card">
-        <div class="act-icon">🐦</div>
-        <h3>Early Morning Birdwatching Walk</h3>
-        <p>A quiet guided walk at first light to spot resident and migratory birds across the orchards and pond.</p>
-        <div class="act-meta"><span>⏱ 75–90 min · Age 8+</span><span class="price">₹300 / ₹200</span></div>
-      </div>
-      <div class="act-card">
-        <span class="tag">Oct – Mar</span>
         <div class="act-icon">🔥</div>
-        <h3>Evening Bonfire with Folk Music</h3>
-        <p>A group bonfire with local folk musicians and roasted farm snacks under an open sky. Winter season only.</p>
-        <div class="act-meta"><span>⏱ 60 min · Groups</span><span class="price">₹2,500 / group</span></div>
+        <h3>Campfire</h3>
+        <p>Gather around the campfire with your group during your visit.</p>
       </div>
-      <div class="act-card" style="display:flex;flex-direction:column;justify-content:center;text-align:center;background:var(--green-light);border-style:dashed">
-        <div class="act-icon" style="margin-inline:auto">✨</div>
-        <h3>Want something custom?</h3>
-        <p>School trips, corporate offsites and celebrations — tell us the occasion and we'll build a day around it.</p>
-        <a class="btn btn-ghost" href="https://wa.me/919689770186?text=Hi!%20I%27d%20like%20a%20custom%20plan%20for%20a%20group%20visit." target="_blank" rel="noopener">Ask us on WhatsApp</a>
+      <div class="act-card">
+        <div class="act-icon">🎲</div>
+        <h3>Indoor &amp; Village Games</h3>
+        <p>Classic village games alongside indoor options — fun for every age group.</p>
+      </div>
+      <div class="act-card">
+        <div class="act-icon">🐄</div>
+        <h3>Cow Milking &amp; Animal Feeding</h3>
+        <p>Get hands-on with our farm animals — milk a cow and feed them yourself.</p>
+      </div>
+      <div class="act-card">
+        <span class="tag">Must-do</span>
+        <div class="act-icon">🌻</div>
+        <h3>Sunflower Field Visit &amp; Photos</h3>
+        <p>Our sunflower field is the farm's signature spot — bring your camera, this is what guests remember most.</p>
       </div>
     </div>
-    <p style="text-align:center;color:var(--muted);font-size:.85rem;margin-top:26px">Prices shown are per adult / per child. Group and school rates available on request.</p>
+    <p style="text-align:center;color:var(--muted);font-size:.85rem;margin-top:26px">All of the above is included in every package below — no add-on charges. (Tractor rides are not available.)</p>
   </div>
 </section>
 
@@ -402,20 +404,20 @@
 <section id="daytrip">
   <div class="container">
     <div class="daytrip">
-      <span class="eyebrow">No Overnight Needed</span>
-      <h2 class="serif" style="font-size:1.9rem;font-weight:600;margin:14px 0 6px">A perfect day trip from the city</h2>
-      <p style="color:var(--muted);max-width:640px">Most guests arrive by mid-morning and head back after an early dinner. Here's a typical day — mix and match activities as you like.</p>
+      <span class="eyebrow">Your Day, Planned</span>
+      <h2 class="serif" style="font-size:1.9rem;font-weight:600;margin:14px 0 6px">What a day at the farm looks like</h2>
+      <p style="color:var(--muted);max-width:640px">One visit, 10:30 AM to 5 PM, everything included. Here's a typical day.</p>
       <div class="timeline">
-        <div class="step"><div class="time">10:00 AM</div><p>Arrive, welcome drink and a short farm walk.</p></div>
-        <div class="step"><div class="time">10:30 AM</div><p>Organic Farming Demo — get your hands in the soil.</p></div>
-        <div class="step"><div class="time">12:00 PM</div><p>Traditional Bullock Cart Ride along the field bunds.</p></div>
-        <div class="step"><div class="time">1:00 PM</div><p>Home-style Maharashtrian thali lunch (on request).</p></div>
-        <div class="step"><div class="time">2:30 PM</div><p>Hands-on Pottery Workshop at the craft shed.</p></div>
-        <div class="step"><div class="time">4:30 PM</div><p>Tea, a stroll through the orchard, and departure.</p></div>
+        <div class="step"><div class="time">10:30 AM</div><p>Arrive, welcome drink and farm tour with crop picking.</p></div>
+        <div class="step"><div class="time">12:00 PM</div><p>Bullock cart ride, cow milking and animal feeding.</p></div>
+        <div class="step"><div class="time">1:00 PM</div><p>Swimming / rain dance and village games.</p></div>
+        <div class="step"><div class="time">2:00 PM</div><p>Pure vegetarian thali lunch.</p></div>
+        <div class="step"><div class="time">3:30 PM</div><p>Sunflower field visit and photos, campfire.</p></div>
+        <div class="step"><div class="time">5:00 PM</div><p>Evening tea &amp; snacks, departure.</p></div>
       </div>
       <div style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap">
-        <a class="btn btn-primary" href="https://wa.me/919689770186?text=Hi!%20I%27d%20like%20to%20plan%20a%20day%20trip." target="_blank" rel="noopener">Plan my day trip on WhatsApp</a>
-        <a class="btn btn-ghost" href="#activities">See all activity prices</a>
+        <a class="btn btn-primary" href="https://wa.me/919689770186?text=Hi!%20I%27d%20like%20to%20plan%20a%20visit." target="_blank" rel="noopener">Plan my visit on WhatsApp</a>
+        <a class="btn btn-ghost" href="#packages">See pricing</a>
       </div>
     </div>
   </div>
@@ -425,65 +427,63 @@
 <section id="packages" style="background:var(--paper)">
   <div class="container">
     <div class="section-head center">
-      <span class="eyebrow">Stay With Us</span>
-      <h2>Packages &amp; overnight stays</h2>
-      <p>One signature overnight package, plus two accommodation styles if you'd rather build your own stay.</p>
+      <span class="eyebrow">Plan Your Visit</span>
+      <h2>Simple, flat pricing</h2>
+      <p>One full-day package, with group, school and event rates for bigger plans. No overnight stay is offered — day visits only.</p>
     </div>
     <div class="pkg-grid">
       <div class="pkg-card featured">
-        <span class="eyebrow" style="background:rgba(255,255,255,.16);color:#fff">Most Popular · 1 Night</span>
-        <h3 style="margin-top:14px">Weekend Farm Escape</h3>
-        <p style="opacity:.85;font-size:.9rem;margin:0">Cottage stay, all meals and three signature activities — our most complete experience.</p>
-        <div class="price-row"><span class="amt">₹4,500</span><span class="unit">/ adult</span></div>
-        <div style="font-size:.85rem;opacity:.85;margin-top:-10px;margin-bottom:14px">₹2,800 / child · ₹8,500 / couple · min 2 guests</div>
+        <span class="eyebrow" style="background:rgba(255,255,255,.16);color:#fff">Most Popular</span>
+        <h3 style="margin-top:14px">Day Picnic</h3>
+        <p style="opacity:.85;font-size:.9rem;margin:0">10:30 AM – 5 PM, meals and every activity included.</p>
+        <div class="price-row"><span class="amt">₹700</span><span class="unit">/ adult</span></div>
+        <div style="font-size:.85rem;opacity:.85;margin-top:-10px;margin-bottom:14px">₹400 / child (below 10)</div>
         <ul>
-          <li><span class="dot"></span>1 night in an Orchard Cottage</li>
-          <li><span class="dot"></span>Welcome drink, dinner, breakfast &amp; lunch</li>
-          <li><span class="dot"></span>Bullock cart ride + farming demo + birdwatching walk</li>
-          <li><span class="dot"></span>Guided farm tour</li>
+          <li><span class="dot"></span>Full-day entry, 10:30 AM – 5 PM</li>
+          <li><span class="dot"></span>Pure vegetarian meals &amp; tea/snacks</li>
+          <li><span class="dot"></span>All activities (see above) included</li>
+          <li><span class="dot"></span>No weekend or festival surcharge</li>
         </ul>
-        <small class="note">Excludes transport, pottery workshop, bonfire &amp; personal expenses.</small>
-        <a class="btn btn-outline" style="margin-top:16px;border-color:#fff" href="https://wa.me/919689770186?text=Hi!%20I%27d%20like%20to%20book%20the%20Weekend%20Farm%20Escape." target="_blank" rel="noopener">Book this package</a>
+        <small class="note">No overnight stay, half-day option or outside food.</small>
+        <a class="btn btn-outline" style="margin-top:16px;border-color:#fff" href="https://wa.me/919689770186?text=Hi!%20I%27d%20like%20to%20book%20a%20day%20picnic." target="_blank" rel="noopener">Book on WhatsApp</a>
       </div>
       <div class="pkg-card">
-        <span class="eyebrow">Stay Only</span>
-        <h3 style="margin-top:14px">Orchard Cottage</h3>
-        <p style="color:var(--muted);font-size:.9rem;margin:0">AC cottage with attached bath, sleeps 2–4.</p>
-        <div class="price-row"><span class="amt" style="color:var(--green)">₹3,500</span><span class="unit" style="color:var(--muted)">/ night</span></div>
+        <span class="eyebrow">20+ Guests</span>
+        <h3 style="margin-top:14px">Group &amp; Corporate</h3>
+        <p style="color:var(--muted);font-size:.9rem;margin:0">Same full day, 10% off for groups of 20 or more.</p>
+        <div class="price-row"><span class="amt" style="color:var(--green)">₹630</span><span class="unit" style="color:var(--muted)">/ adult</span></div>
         <ul style="color:var(--ink)">
-          <li><span class="dot"></span>1 queen bed + 2 floor mattresses</li>
-          <li><span class="dot"></span>Attached bathroom, hot water, AC</li>
-          <li><span class="dot"></span>Private verandah, tea/coffee kit</li>
+          <li><span class="dot"></span>Meals &amp; activities included</li>
+          <li><span class="dot"></span>Corporate hall + projector at extra cost</li>
+          <li><span class="dot"></span>Games included free</li>
         </ul>
-        <small class="note" style="color:var(--muted)">Meals &amp; activities booked separately.</small>
+        <small class="note" style="color:var(--muted)">10:30 AM – 5 PM, 20+ guests.</small>
       </div>
       <div class="pkg-card">
-        <span class="eyebrow">Stay Only</span>
-        <h3 style="margin-top:14px">Riverside Safari Tent</h3>
-        <p style="color:var(--muted);font-size:.9rem;margin:0">Camping-style tent, sleeps 2–3.</p>
-        <div class="price-row"><span class="amt" style="color:var(--green)">₹2,200</span><span class="unit" style="color:var(--muted)">/ night</span></div>
+        <span class="eyebrow">Weekdays Only</span>
+        <h3 style="margin-top:14px">School &amp; College Trips</h3>
+        <p style="color:var(--muted);font-size:.9rem;margin:0">Educational farm tour, up to 500 students.</p>
+        <div class="price-row"><span class="amt" style="color:var(--green)">₹500</span><span class="unit" style="color:var(--muted)">/ student</span></div>
         <ul style="color:var(--ink)">
-          <li><span class="dot"></span>2 single camp cots, solar lantern</li>
-          <li><span class="dot"></span>Verandah deck, shared bathroom block</li>
-          <li><span class="dot"></span>Closest to the riverside walk</li>
+          <li><span class="dot"></span>11 AM – 5 PM, weekdays only</li>
+          <li><span class="dot"></span>Meals &amp; educational tour included</li>
+          <li><span class="dot"></span>Safety staff present throughout</li>
         </ul>
-        <small class="note" style="color:var(--muted)">Meals &amp; activities booked separately.</small>
+        <small class="note" style="color:var(--muted)">Not available on weekends.</small>
+      </div>
+      <div class="pkg-card">
+        <span class="eyebrow">Up to 500 Guests</span>
+        <h3 style="margin-top:14px">Birthdays &amp; Functions</h3>
+        <p style="color:var(--muted);font-size:.9rem;margin:0">Celebrate on the farm for the day.</p>
+        <div class="price-row"><span class="amt" style="color:var(--green)">₹700</span><span class="unit" style="color:var(--muted)">/ person onwards</span></div>
+        <ul style="color:var(--ink)">
+          <li><span class="dot"></span>Decoration, cake &amp; sound system extra</li>
+          <li><span class="dot"></span>Hosts up to 500 guests</li>
+        </ul>
+        <small class="note" style="color:var(--muted)">Ask us for a custom quote.</small>
       </div>
     </div>
-
-    <div class="offer-strip" style="margin-top:34px">
-      <div class="offer-card">
-        <span class="eyebrow" style="background:rgba(255,255,255,.2);color:#fff">First Visit</span>
-        <h3 style="margin:10px 0 4px">10% off with WELCOME10</h3>
-        <p style="margin:0;opacity:.9;font-size:.9rem">Use this code on your first booking with us.</p>
-        <span class="code">WELCOME10</span>
-      </div>
-      <div class="offer-card" style="background:linear-gradient(135deg,var(--green),var(--green-dark))">
-        <span class="eyebrow" style="background:rgba(255,255,255,.2);color:#fff">Jun – Sep</span>
-        <h3 style="margin:10px 0 4px">25% off — Monsoon Special 2026</h3>
-        <p style="margin:0;opacity:.9;font-size:.9rem">Auto-applied on weekday overnight stays during the monsoon.</p>
-      </div>
-    </div>
+    <p style="text-align:center;color:var(--muted);font-size:.85rem;margin-top:26px">Book by WhatsApp and pay a 10% advance to confirm — no refund on cancellation, and dates cannot be changed once booked.</p>
   </div>
 </section>
 
@@ -496,13 +496,13 @@
       <p>Everything you need for a comfortable, safe visit — nothing you don't.</p>
     </div>
     <div class="fac-grid">
-      <div class="fac-item"><div class="ic">🛏️</div><h4>Cottages &amp; Tents</h4><p>AC cottages and safari-style tents</p></div>
-      <div class="fac-item"><div class="ic">🍽️</div><h4>Farm-to-Table Meals</h4><p>Home-style Maharashtrian thalis</p></div>
-      <div class="fac-item"><div class="ic">🧭</div><h4>Guided Tours</h4><p>Trained guides for every activity</p></div>
+      <div class="fac-item"><div class="ic">💧</div><h4>RO Drinking Water</h4><p>Safe drinking water available on site</p></div>
+      <div class="fac-item"><div class="ic">🍽️</div><h4>Vegetarian Meals</h4><p>Pure veg food included, cooked fresh</p></div>
+      <div class="fac-item"><div class="ic">🧭</div><h4>Guided Tours</h4><p>Staff guide you through the day</p></div>
       <div class="fac-item"><div class="ic">🅿️</div><h4>On-site Parking</h4><p>Free parking for cars &amp; buses</p></div>
-      <div class="fac-item"><div class="ic">🩹</div><h4>First Aid &amp; Safety Briefing</h4><p>Safety briefing before every activity</p></div>
-      <div class="fac-item"><div class="ic">🔥</div><h4>Bonfire &amp; Evening Programs</h4><p>Seasonal music &amp; storytelling</p></div>
-      <div class="fac-item"><div class="ic">🐄</div><h4>Working Livestock</h4><p>Indigenous cattle, goats &amp; poultry</p></div>
+      <div class="fac-item"><div class="ic">🩹</div><h4>First Aid</h4><p>On-site first aid, nearest hospital 10 min away</p></div>
+      <div class="fac-item"><div class="ic">🔥</div><h4>Campfire</h4><p>Part of your day visit</p></div>
+      <div class="fac-item"><div class="ic">🐄</div><h4>Farm Animals</h4><p>Pet animals, cow milking &amp; feeding</p></div>
       <div class="fac-item"><div class="ic">🚻</div><h4>Clean Restrooms</h4><p>Maintained restroom blocks on site</p></div>
       <div class="fac-item"><div class="ic">🏊</div><h4>Swimming Pool</h4><p>On-site pool for guests</p></div>
       <div class="fac-item"><div class="ic">🧗</div><h4>Adventure Sports</h4><p>Outdoor adventure activities</p></div>
@@ -541,18 +541,9 @@
 </section>
 
 <!-- ============ TESTIMONIAL ============ -->
-<section>
-  <div class="container">
-    <div class="testimonial">
-      <div class="quote-mark">"</div>
-      <div>
-        <div class="stars">★★★★★</div>
-        <blockquote>"We did the Weekend Farm Escape with our two kids. The cottage was spotless, the food was simple and delicious, and the staff went out of their way for our lactose-intolerant daughter. The kids still talk about the bullock cart ride and pottery."</blockquote>
-        <cite>— Amit S., Weekend Farm Escape guest</cite>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- TODO: no verified day-visit review yet - add one here (and in MongoDB `reviews`) once a real
+     guest leaves feedback on the new day-picnic format. The old review here was removed because
+     it described the discontinued overnight "Weekend Farm Escape" package. -->
 
 <!-- ============ CONTACT ============ -->
 <section id="contact" style="background:var(--paper)">
@@ -560,18 +551,18 @@
     <div class="section-head center">
       <span class="eyebrow">Get in Touch</span>
       <h2>Plan your visit</h2>
-      <p>Call, WhatsApp, or talk to our voice assistant any time — we're here every day, 8 AM to 8 PM.</p>
+      <p>Call, WhatsApp, or talk to our voice assistant any time — day visits run 10:30 AM to 5 PM.</p>
     </div>
     <div class="contact-wrap">
       <div class="contact-card">
         <h3>📍 Visit us</h3>
         <div class="info-row">
           <div class="ic">📍</div>
-          <div><strong>Address</strong><span>Village Dhanora, Tal. Rajura, Chandrapur District, Maharashtra 442905 — 25 km / 30 min from Rajura via the Rajura–Sindhi Road. Nearest town: Virur (5 km).</span></div>
+          <div><strong>Address</strong><span>Dhanora village, near Virur Station, Rajura taluka, Chandrapur District, Maharashtra 442905 — between the Tadoba and Jogapur forest areas. 20 km / 30 min from Rajura via Sindhi Road or Virur Station Road.</span></div>
         </div>
         <div class="info-row">
           <div class="ic">🕗</div>
-          <div><strong>Hours</strong><span>Open daily, 8:00 AM – 8:00 PM · Check-in 12:00 PM · Check-out 10:00 AM</span></div>
+          <div><strong>Hours</strong><span>Day visits 10:30 AM – 5 PM · School trips 11 AM – 5 PM, weekdays only · No overnight stay</span></div>
         </div>
         <div class="info-row">
           <div class="ic">👤</div>
@@ -614,7 +605,7 @@
         <span class="mark" style="background:#fff;color:var(--green)">🌾</span>
         <span class="name" style="color:#fff">Kshanbhar Vishranti<small style="color:#9FC2B5">Agro Tourism</small></span>
       </div>
-      <p style="max-width:280px;opacity:.85">A 14-acre organic family farm at Village Dhanora, Tal. Rajura — day visits, overnight stays and hands-on farm experiences since 2019.</p>
+      <p style="max-width:280px;opacity:.85">A 15-acre family farm in Dhanora, near Virur Station, Rajura — full-day picnics with farm activities and a sunflower field, 10:30 AM to 5 PM.</p>
       <div class="social-row" style="margin-top:16px">
         <a class="social-dot" style="background:#25D366" href="https://wa.me/919689770186" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
         <a class="social-dot" style="background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af)" href="https://instagram.com/kshanbharvishranti" target="_blank" rel="noopener" aria-label="Instagram">📷</a>
@@ -627,7 +618,7 @@
         <li><a href="#about">About Us</a></li>
         <li><a href="#activities">Activities</a></li>
         <li><a href="#daytrip">Day Trip</a></li>
-        <li><a href="#packages">Packages &amp; Stay</a></li>
+        <li><a href="#packages">Pricing</a></li>
         <li><a href="#gallery">Gallery</a></li>
       </ul>
     </div>
@@ -643,9 +634,9 @@
     <div>
       <h5>Policies</h5>
       <ul>
-        <li><span style="opacity:.85">Free cancellation up to 7 days before check-in</span></li>
-        <li><span style="opacity:.85">50% charge within 7 days of check-in</span></li>
-        <li><span style="opacity:.85">Registered under the Maharashtra Agri-Tourism Policy</span></li>
+        <li><span style="opacity:.85">No refund on cancellation; dates cannot be changed</span></li>
+        <li><span style="opacity:.85">No alcohol, smoking, pets, outside food or loud music / DJ</span></li>
+        <li><span style="opacity:.85">Guest pays 100% for any property damage</span></li>
       </ul>
     </div>
   </div>
