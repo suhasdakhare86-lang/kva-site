@@ -39,7 +39,7 @@
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
-    margin:0; color:var(--ink); background:var(--cream);
+    margin:0; color:var(--ink); background:var(--cream); overflow-x:hidden;
     font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
     line-height:1.6; -webkit-font-smoothing:antialiased;
   }
@@ -239,11 +239,17 @@
     .gallery-grid .big{grid-column:span 2;grid-row:span 1}
   }
   @media (max-width:760px){
-    nav.links,.nav-cta .btn-ghost-desktop{display:none}
+    nav.links,.nav-cta .btn-ghost-desktop,.nav-cta .btn-whatsapp{display:none}
     .hamburger{display:inline-flex}
     section{padding-block:56px}
     .hero{padding-block:64px 90px}
+    .hero-ctas .btn{white-space:normal;text-align:center}
     .footer-grid{grid-template-columns:1fr 1fr}
+    .topbar-links span{display:none}
+  }
+  @media (max-width:420px){
+    .topbar-links a:nth-child(2){display:none}
+    .footer-grid{grid-template-columns:1fr}
   }
 </style>
 </head>
@@ -297,6 +303,7 @@
     <a href="#facilities">Facilities</a>
     <a href="#gallery">Gallery</a>
     <a href="#contact">Contact</a>
+    <a href="https://wa.me/919689770186?text=Hi!%20I%27d%20like%20to%20know%20more%20about%20visiting%20the%20farm." target="_blank" rel="noopener" style="color:#1DA851;font-weight:700">💬 Chat on WhatsApp</a>
   </div>
 </header>
 
