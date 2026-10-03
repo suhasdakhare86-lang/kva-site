@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://suhasdakhare86-lang.github.io/kva-site/sitemap.xml
