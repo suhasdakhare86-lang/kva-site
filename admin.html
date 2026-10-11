@@ -298,6 +298,9 @@
       document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
       // Refresh so a booking the Assistant just created shows up straight away
       if (btn.dataset.tab === 'bookings' || btn.dataset.tab === 'enquiries') loadData(btn.dataset.tab);
+      // Lazy-load the chat widget only when its tab is actually opened - loading it eagerly on
+      // page load was suspected of swallowing/blocking later clicks on the other tab buttons.
+      if (btn.dataset.tab === 'assistant' && window.initStaffChat) window.initStaffChat();
     });
   });
 
@@ -473,27 +476,35 @@
 
 <script type="module">
   import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
-  // "KVA · Staff Assistant" n8n workflow - internal only, not linked anywhere on the public site
-  createChat({
-    webhookUrl: 'https://aryandakhare.app.n8n.cloud/webhook/07343e1e-decf-4082-8194-8825193857bc/chat',
-    target: '#n8n-chat-staff',
-    mode: 'fullscreen',
-    loadPreviousSession: true,
-    showWelcomeScreen: false,
-    defaultLanguage: 'en',
-    initialMessages: [
-      'Staff assistant ready. Give me a name/phone/code to look up an enquiry or booking, or tell me to confirm one once payment is collected.',
-    ],
-    i18n: {
-      en: {
-        title: 'Staff Assistant',
-        subtitle: 'Enquiries · Bookings · Payments',
-        inputPlaceholder: 'e.g. Ramesh Patil ka booking confirm karo, total 4500, advance 2000…',
-        getStarted: 'New conversation',
-        closeButtonTooltip: 'Close',
+  // "KVA · Staff Assistant" n8n workflow - internal only, not linked anywhere on the public site.
+  // Initialized lazily (only when the Assistant tab is first opened, see the tab-click handler
+  // above) rather than at page load - loading it eagerly was suspected of interfering with clicks
+  // on the other tab buttons.
+  var staffChatStarted = false;
+  window.initStaffChat = function () {
+    if (staffChatStarted) return;
+    staffChatStarted = true;
+    createChat({
+      webhookUrl: 'https://aryandakhare.app.n8n.cloud/webhook/07343e1e-decf-4082-8194-8825193857bc/chat',
+      target: '#n8n-chat-staff',
+      mode: 'fullscreen',
+      loadPreviousSession: true,
+      showWelcomeScreen: false,
+      defaultLanguage: 'en',
+      initialMessages: [
+        'Staff assistant ready. Give me a name/phone/code to look up an enquiry or booking, or tell me to confirm one once payment is collected.',
+      ],
+      i18n: {
+        en: {
+          title: 'Staff Assistant',
+          subtitle: 'Enquiries · Bookings · Payments',
+          inputPlaceholder: 'e.g. Ramesh Patil ka booking confirm karo, total 4500, advance 2000…',
+          getStarted: 'New conversation',
+          closeButtonTooltip: 'Close',
+        },
       },
-    },
-  });
+    });
+  };
 </script>
 </body>
 </html>
