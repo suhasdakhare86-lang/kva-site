@@ -81,12 +81,15 @@
     number the "KVA · Guest Assistant (WhatsApp)" n8n workflow listens on. The phone/call number
     shown for the owner is +91 93221 54513 (Sharda Eknath Dakhare) - a different number by design.
   - Voice assistant widget = ElevenLabs agent agent_3601m19jc1refemt184t4ystkfax.
+  - Text chat bubble (bottom-right) = n8n "KVA · Guest Assistant (Web)" workflow (L7i1o0GVGgCXNje3),
+    Chat Trigger "Website Chat" webhook. Floating WhatsApp button sits bottom-left so they don't overlap.
   - Google Map is an address-based embed (no API key needed). Replace with exact coordinates if you
     add them to MongoDB `settings.geo` later.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet">
 <style>
   :root{
     --green:#0E4A43; --green-dark:#0A3733; --green-light:#E7F0EC;
@@ -283,11 +286,20 @@
 
   /* ---------- floating whatsapp ---------- */
   .float-wa{
-    position:fixed;bottom:22px;right:22px;z-index:60;background:#25D366;color:#fff;
+    position:fixed;bottom:22px;left:22px;z-index:60;background:#25D366;color:#fff;
     width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;
     box-shadow:0 10px 24px -6px rgba(0,0,0,.35);font-size:26px;text-decoration:none;
   }
   .float-wa:hover{background:#1DA851}
+
+  /* ---------- n8n chat widget ---------- */
+  :root{
+    --chat--color-primary:#0E4A43; --chat--color-primary-shade-50:#0A3733; --chat--color-primary-shade-100:#082B28;
+    --chat--color-secondary:#1DA851;
+    --chat--toggle--background:#0E4A43; --chat--toggle--hover--background:#0A3733; --chat--toggle--active--background:#0A3733;
+    --chat--window--width:380px; --chat--window--height:560px;
+    --chat--header--background:#0E4A43; --chat--font-family:'Inter',system-ui,sans-serif;
+  }
 
   /* ---------- responsive ---------- */
   @media (max-width:980px){
@@ -382,7 +394,7 @@
       <a class="btn btn-outline" href="#packages">See Pricing</a>
     </div>
     <div class="hero-facts">
-      <div class="hero-fact"><strong>₹700 / ₹400</strong><span>Per adult / per child</span></div>
+      <div class="hero-fact"><strong>₹700 / ₹400</strong><span>Age 10+ / age 4–9 (3 &amp; under free)</span></div>
       <div class="hero-fact"><strong>25,000 sq ft</strong><span>Water park</span></div>
       <div class="hero-fact"><strong>10:30–5:00</strong><span>Day visit hours</span></div>
       <div class="hero-fact"><strong>500</strong><span>Max guests for groups &amp; events</span></div>
@@ -507,7 +519,7 @@
         <h3 style="margin-top:14px">Day Picnic</h3>
         <p style="opacity:.85;font-size:.9rem;margin:0">10:30 AM – 5 PM, meals and every activity included.</p>
         <div class="price-row"><span class="amt">₹700</span><span class="unit">/ adult</span></div>
-        <div style="font-size:.85rem;opacity:.85;margin-top:-10px;margin-bottom:14px">₹400 / child (below 10)</div>
+        <div style="font-size:.85rem;opacity:.85;margin-top:-10px;margin-bottom:14px">₹400 / child (age 4–9) · free age 3 &amp; under</div>
         <ul>
           <li><span class="dot"></span>Full-day entry, 10:30 AM – 5 PM</li>
           <li><span class="dot"></span>Pure vegetarian meals &amp; tea/snacks</li>
@@ -722,6 +734,31 @@
 <a class="float-wa" href="https://wa.me/919689770186?text=Hi!%20I%27d%20like%20to%20know%20more%20about%20visiting%20the%20farm." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">💬</a>
 
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+<!-- ============ TEXT CHAT (n8n "KVA · Guest Assistant (Web)") ============ -->
+<script type="module">
+  import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+  createChat({
+    webhookUrl: 'https://aryandakhare.app.n8n.cloud/webhook/48926b6c-2416-4ec7-98c6-01fad6781eef/chat',
+    mode: 'window',
+    loadPreviousSession: true,
+    showWelcomeScreen: false,
+    defaultLanguage: 'en',
+    initialMessages: [
+      'Namaste! 🌾',
+      "I'm the Kshanbhar Vishranti Agro assistant. Ask me about our day picnic, prices, activities or group bookings. (English / हिंदी / मराठी)",
+    ],
+    i18n: {
+      en: {
+        title: 'Kshanbhar Vishranti Agro',
+        subtitle: 'Day picnic · Groups · Events — we reply 24/7',
+        footer: '',
+        getStarted: 'New conversation',
+        inputPlaceholder: 'Type your question…',
+        closeButtonTooltip: 'Close chat',
+      },
+    },
+  });
+</script>
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
   var menuBtn = document.getElementById('menuBtn');
